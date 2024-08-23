@@ -1,10 +1,10 @@
-﻿using HouseRentingSystem.Web.Data;
+﻿using HouseRentingSystem.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-	public static class ServiceCollectionExtension
+    public static class ServiceCollectionExtension
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
@@ -17,7 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
 		{
 			var connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-			services.AddDbContext<ApplicationDbContext>(options =>
+			services.AddDbContext<HouseRentingDbContext>(options =>
 				options.UseSqlServer(connectionString));
 
 			services.AddDatabaseDeveloperPageExceptionFilter();
@@ -34,7 +34,7 @@ namespace Microsoft.Extensions.DependencyInjection
 				{
 
 				})
-				.AddEntityFrameworkStores<ApplicationDbContext>();
+				.AddEntityFrameworkStores<HouseRentingDbContext>();
 
 			return services;
 		}
