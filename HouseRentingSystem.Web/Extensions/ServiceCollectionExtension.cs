@@ -1,5 +1,5 @@
 ﻿using HouseRentingSystem.Infrastructure;
-using Microsoft.AspNetCore.Identity;
+using HouseRentingSystem.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -30,7 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
 			IConfiguration configuration)
 		{
 			services
-				.AddDefaultIdentity<IdentityUser>(options =>
+				.AddDefaultIdentity<ApplicationUser>(options =>
 				{
 
 				})
