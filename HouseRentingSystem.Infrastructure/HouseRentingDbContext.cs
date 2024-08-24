@@ -20,6 +20,7 @@ namespace HouseRentingSystem.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new CategoriesConfiguration());
             builder.ApplyConfiguration(new HousesConfiguration());
 
             base.OnModelCreating(builder);
