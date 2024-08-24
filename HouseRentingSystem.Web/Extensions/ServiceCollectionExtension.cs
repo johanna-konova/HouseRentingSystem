@@ -1,6 +1,7 @@
 ﻿using HouseRentingSystem.Infrastructure;
 using HouseRentingSystem.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -32,7 +33,16 @@ namespace Microsoft.Extensions.DependencyInjection
 			services
 				.AddDefaultIdentity<ApplicationUser>(options =>
 				{
-
+					options.SignIn.RequireConfirmedAccount = 
+						configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
+					options.Password.RequireDigit = 
+                        configuration.GetValue<bool>("Identity:Password:RequireDigit");
+					options.Password.RequireLowercase =
+                        configuration.GetValue<bool>("Identity:Password:RequireLowercase");
+					options.Password.RequireNonAlphanumeric =
+                        configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
+					options.Password.RequireUppercase =
+						configuration.GetValue<bool>("Identity:Password:RequireUppercase");
 				})
 				.AddEntityFrameworkStores<HouseRentingDbContext>();
 
