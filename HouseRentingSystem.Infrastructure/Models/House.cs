@@ -35,6 +35,12 @@ namespace HouseRentingSystem.Infrastructure.Models
         [Precision(18, 2)]
         public decimal PricePerMonth { get; set; }
 
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime UpdatedOn { get; set; }
+
+        public bool IsActive { get; set; }
+
         public int CategoryId { get; set; }
 
         [ForeignKey(nameof(CategoryId))]

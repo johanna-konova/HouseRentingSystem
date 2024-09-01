@@ -21,6 +21,18 @@ namespace HouseRentingSystem.Infrastructure.Configurations
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
+                .Property(h => h.CreatedOn)
+                .HasDefaultValueSql("GETDATE()");
+
+            builder
+                .Property(h => h.UpdatedOn)
+                .HasDefaultValueSql("GETDATE()");
+
+            builder
+                .Property(h => h.IsActive)
+                .HasDefaultValue(true);
+
+            builder
                 .HasData(GenerateHouses());
         }
 
@@ -36,8 +48,8 @@ namespace HouseRentingSystem.Infrastructure.Configurations
                 ImageUrl = "https://www.luxury-architecture.net/wp-content/uploads/2017/12/1513217889-7597-FAIRWAYS-010.jpg",
                 PricePerMonth = 2100.00M,
                 CategoryId = 3,
-                AgentId = Guid.Parse("6F343177-54A9-48BC-9229-8A90421E36D1"),
-                RenterId = Guid.Parse("89B9BC3B-C6C4-47DB-B227-B7368F28CB69"),
+                AgentId = Guid.Parse("1F233F72-8C64-4BF0-9B0F-6D58A0C9FA7E"),
+                RenterId = Guid.Parse("8B08A6A0-2442-4F0A-A1B8-B70EB61AF2BB"),
             };
             houses.Add(house);
 
@@ -49,7 +61,7 @@ namespace HouseRentingSystem.Infrastructure.Configurations
                 ImageUrl = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/179489660.jpg?k=2029f6d9589b49c95dcc9503a265e292c2cdfcb5277487a0050397c3f8dd545a&o=&hp=1",
                 PricePerMonth = 1200.00M,
                 CategoryId = 2,
-                AgentId = Guid.Parse("6F343177-54A9-48BC-9229-8A90421E36D1"),
+                AgentId = Guid.Parse("1F233F72-8C64-4BF0-9B0F-6D58A0C9FA7E"),
             };
             houses.Add(house);
 
@@ -61,7 +73,7 @@ namespace HouseRentingSystem.Infrastructure.Configurations
                 ImageUrl = "https://i.pinimg.com/originals/a6/f5/85/a6f5850a77633c56e4e4ac4f867e3c00.jpg",
                 PricePerMonth = 2000.00M,
                 CategoryId = 2,
-                AgentId = Guid.Parse("6F343177-54A9-48BC-9229-8A90421E36D1"),
+                AgentId = Guid.Parse("1F233F72-8C64-4BF0-9B0F-6D58A0C9FA7E"),
             };
             houses.Add(house);
 
