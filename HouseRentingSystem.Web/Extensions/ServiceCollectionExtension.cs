@@ -1,7 +1,9 @@
-﻿using HouseRentingSystem.Infrastructure;
+﻿using HouseRentingSystem.Core.Contracts;
+using HouseRentingSystem.Core.Services;
+using HouseRentingSystem.Infrastructure;
+using HouseRentingSystem.Infrastructure.Common;
 using HouseRentingSystem.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -9,7 +11,11 @@ namespace Microsoft.Extensions.DependencyInjection
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
-			return services;
+			services.AddScoped<IHouseService, HouseService>();
+			services.AddScoped<IAgentService, AgentService>();
+			services.AddScoped<ICategoryService, CategoryService>();
+
+            return services;
 		}
 
 		public static IServiceCollection AddApplicationDbContext(
@@ -21,7 +27,9 @@ namespace Microsoft.Extensions.DependencyInjection
 			services.AddDbContext<HouseRentingDbContext>(options =>
 				options.UseSqlServer(connectionString));
 
-			services.AddDatabaseDeveloperPageExceptionFilter();
+			services.AddScoped<IRepository, Repository>();
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
 			
 			return services;
 		}
