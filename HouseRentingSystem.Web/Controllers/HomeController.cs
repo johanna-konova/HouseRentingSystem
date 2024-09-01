@@ -1,3 +1,4 @@
+using HouseRentingSystem.Core.Contracts;
 using HouseRentingSystem.Core.Models;
 using HouseRentingSystem.Core.Models.Home;
 using Microsoft.AspNetCore.Mvc;
@@ -7,16 +8,22 @@ namespace HouseRentingSystem.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> logger;
+        private readonly IHouseService houseService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+            ILogger<HomeController> _logger,
+            IHouseService _houseService)
         {
-            _logger = logger;
+            logger = _logger;
+            houseService = _houseService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(new IndexViewModel());
+            var model = await houseService.GetLastThreeAsync();
+
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
