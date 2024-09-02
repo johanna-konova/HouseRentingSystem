@@ -5,7 +5,8 @@ namespace HouseRentingSystem.Core.Contracts
     public interface IAgentService
     {
         Task<bool> IsAgentAsync(Guid userId);
-        Task<bool> hasAgentWithGivenPhoneNumberAsync(string phoneNumber);
+        Task<bool> HasAgentWithGivenPhoneNumberAsync(string phoneNumber);
         Task CreateAsync(Guid userId, BecomeAgentFormModel model);
-    }
+		Task<Guid> GetAgentIdAsync(Guid userId);
+	}
 }
