@@ -28,5 +28,10 @@ namespace HouseRentingSystem.Core.Services
                     ImageUrl = h.ImageUrl,
                 })
                 .ToListAsync();
+
+            public async Task<bool> hasRentAsync(Guid userId)
+            => await repository
+                .AllAsNoTracking<House>()
+                .AnyAsync(h => h.RenterId == userId);
     }
 }
