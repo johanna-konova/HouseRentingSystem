@@ -6,6 +6,7 @@ using System.Security.Claims;
 
 using static HouseRentingSystem.Core.Constants.MessageTypes;
 using static HouseRentingSystem.Core.Constants.MessageConstants;
+using HouseRentingSystem.Web.Attributes;
 
 namespace HouseRentingSystem.Controllers
 {
@@ -25,28 +26,13 @@ namespace HouseRentingSystem.Controllers
 
         public IActionResult Index() => RedirectToAction(nameof(Become));
 
-		public async Task<IActionResult> Become()
-        {
-            if (await agentService.IsAgentAsync(User.Id()))
-            {
-                TempData[ErrorMessage] = AlreadyAgent;
+        [NotAgent]
+		public IActionResult Become() => View();
 
-                return RedirectToAction(nameof(HouseController.Mine), "House");
-            }
-
-            return View();
-		}
-
+		[NotAgent]
 		[HttpPost]
 		public async Task<IActionResult> Become(BecomeAgentFormModel model)
         {
-            if (await agentService.IsAgentAsync(User.Id()))
-            {
-                TempData[ErrorMessage] = AlreadyAgent;
-
-                return RedirectToAction(nameof(HouseController.Mine), "House");
-            }
-
             if (await agentService.hasAgentWithGivenPhoneNumberAsync(model.PhoneNumber))
             {
                 ModelState.AddModelError(nameof(model.PhoneNumber), PhoneExists);
