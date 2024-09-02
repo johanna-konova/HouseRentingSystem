@@ -1,10 +1,12 @@
 ﻿using HouseRentingSystem.Core.Models.Home;
+using HouseRentingSystem.Core.Models.House;
 
 namespace HouseRentingSystem.Core.Contracts
 {
     public interface IHouseService
     {
         Task<IEnumerable<IndexViewModel>> GetLastThreeAsync();
-        Task<bool> hasRentAsync(Guid userId);
-    }
+        Task<bool> HasRentAsync(Guid userId);
+        Task<Guid> CreateAsync(HouseFormModel model, Guid agentId);
+	}
 }

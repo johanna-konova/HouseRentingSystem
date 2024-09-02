@@ -20,8 +20,8 @@
 
             public const int ImageUrlMaxLength = 2048;
 
-            public const string PricePerMonthMinValue = "0";
-            public const string PricePerMonthMaxValue = "2000";
+            public const string PricePerMonthMinValue = "0.00";
+            public const string PricePerMonthMaxValue = "2000.00";
         }
 
         public static class Agent
