@@ -33,12 +33,12 @@ namespace HouseRentingSystem.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Become(BecomeAgentFormModel model)
         {
-            if (await agentService.hasAgentWithGivenPhoneNumberAsync(model.PhoneNumber))
+            if (await agentService.HasAgentWithGivenPhoneNumberAsync(model.PhoneNumber))
             {
                 ModelState.AddModelError(nameof(model.PhoneNumber), PhoneExists);
             }
 
-            if (await houseService.hasRentAsync(User.Id()))
+            if (await houseService.HasRentAsync(User.Id()))
             {
                 ModelState.AddModelError("Error", HasRents);
             }
