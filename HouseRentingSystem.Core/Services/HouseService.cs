@@ -6,6 +6,7 @@ using HouseRentingSystem.Infrastructure.Common;
 using HouseRentingSystem.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Linq;
 
 namespace HouseRentingSystem.Core.Services
@@ -106,9 +107,40 @@ namespace HouseRentingSystem.Core.Services
                 })
                 .ToListAsync();
 
-            public async Task<bool> HasRentAsync(Guid userId)
+        public async Task<IEnumerable<HouseViewModel>> GetManagedByAgentIdAsync(Guid agentId)
+        {
+            var housesQuery = repository
+                .AllAsNoTracking<House>()
+                .Where(h => h.AgentId == agentId);
+
+            return await ProjectToModel(housesQuery);
+        }
+
+        public async Task<IEnumerable<HouseViewModel>> GetRentedByUserIdAsync(Guid userId)
+        {
+            var housesQuery = repository
+                .AllAsNoTracking<House>()
+                .Where(h => h.RenterId == userId);
+
+            return await ProjectToModel(housesQuery);
+        }
+
+        public async Task<bool> HasRentAsync(Guid userId)
             => await repository
                 .AllAsNoTracking<House>()
                 .AnyAsync(h => h.RenterId == userId);
+
+        private async Task<IEnumerable<HouseViewModel>> ProjectToModel(IQueryable<House> housesQuery)
+            => await housesQuery
+                .Select(h => new HouseViewModel()
+                {
+                    Id = h.Id,
+                    Title = h.Title,
+                    Address = h.Address,
+                    ImageUrl = h.ImageUrl,
+                    PricePerMonth = h.PricePerMonth,
+                    IsRented = h.RenterId != null,
+                })
+                .ToListAsync();
     }
 }
