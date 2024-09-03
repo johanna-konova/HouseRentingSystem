@@ -8,5 +8,6 @@ namespace HouseRentingSystem.Core.Contracts
         Task<IEnumerable<IndexViewModel>> GetLastThreeAsync();
         Task<bool> HasRentAsync(Guid userId);
         Task<Guid> CreateAsync(HouseFormModel model, Guid agentId);
+        Task<AllHousesQueryModel> GetAllAsync(AllHousesQueryModel model);
 	}
 }

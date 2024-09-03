@@ -30,9 +30,11 @@ namespace HouseRentingSystem.Controllers
         public IActionResult Index() => RedirectToAction(nameof(All));
 
         [AllowAnonymous]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All([FromQuery] AllHousesQueryModel model)
         {
-            return View(new AllHousesQueryModel());
+			var houses = await houseService.GetAllAsync(model);
+
+			return View(houses);
         }
 
 		public async Task<IActionResult> Mine()

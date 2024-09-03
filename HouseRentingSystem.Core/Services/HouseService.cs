@@ -1,9 +1,11 @@
 ﻿using HouseRentingSystem.Core.Contracts;
 using HouseRentingSystem.Core.Models.Home;
 using HouseRentingSystem.Core.Models.House;
+using HouseRentingSystem.Core.Models.House.Enums;
 using HouseRentingSystem.Infrastructure.Common;
 using HouseRentingSystem.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Linq;
 
 namespace HouseRentingSystem.Core.Services
@@ -11,10 +13,14 @@ namespace HouseRentingSystem.Core.Services
     public class HouseService : IHouseService
     {
         private readonly IRepository repository;
+        private readonly ICategoryService categoryService;
 
-        public HouseService(IRepository _repository)
+        public HouseService(
+            IRepository _repository,
+            ICategoryService _categoryService)
         {
             repository = _repository;
+            categoryService = _categoryService;
         }
 
 		public async Task<Guid> CreateAsync(HouseFormModel model, Guid agentId)
@@ -34,6 +40,57 @@ namespace HouseRentingSystem.Core.Services
             await repository.SaveChangesAsync();
 
             return newHouse.Id;
+		}
+
+		public async Task<AllHousesQueryModel> GetAllAsync(AllHousesQueryModel model)
+		{
+            var housesQuery = repository.AllAsNoTracking<House>();
+
+            if (!string.IsNullOrEmpty(model.Category))
+            {
+                housesQuery = housesQuery
+                    .Where(h => h.Category.Name == model.Category);
+			}
+
+            if (!string.IsNullOrEmpty(model.SearchTerm))
+            {
+                string wildCard = $"%{model.SearchTerm.ToLower()}%";
+
+                housesQuery = housesQuery
+                    .Where(h => EF.Functions.Like(h.Title, wildCard)
+                             || EF.Functions.Like(h.Description, wildCard)
+                             || EF.Functions.Like(h.Address, wildCard));
+			}
+
+            housesQuery = model.Sorting switch
+            {
+                Sorting.Oldest => housesQuery.OrderBy(h => h.CreatedOn),
+                Sorting.LowestPrice => housesQuery.OrderBy(h => h.PricePerMonth),
+                Sorting.HighestPrice => housesQuery.OrderByDescending(h => h.PricePerMonth),
+                Sorting.RentedFirst => housesQuery.OrderBy(h => h.RenterId == null),
+                Sorting.NotRentedFirst => housesQuery.OrderBy(h => h.RenterId != null),
+                _ => housesQuery.OrderByDescending(h => h.CreatedOn)
+			};
+
+            var houses = await housesQuery
+                .Skip((model.CurrentPage - 1) * model.HousesPerPage)
+                .Take(model.HousesPerPage)
+                .Select(h => new HouseViewModel()
+                {
+                    Id = h.Id,
+                    Title = h.Title,
+                    Address = h.Address,
+                    ImageUrl = h.ImageUrl,
+                    PricePerMonth = h.PricePerMonth,
+                    IsRented = h.RenterId != null,
+                })
+                .ToListAsync();
+
+            model.TotalHousesCount = housesQuery.Count();
+            model.Houses = houses;
+            model.Categories = await categoryService.GetCategoriesNamesAsync();
+
+            return model;
 		}
 
 		public async Task<IEnumerable<IndexViewModel>> GetLastThreeAsync()

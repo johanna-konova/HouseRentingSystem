@@ -18,11 +18,17 @@ namespace HouseRentingSystem.Core.Services
 		public async Task<IEnumerable<HouseCategoryOptionModel>> GetAllAsync()
 			=> await repository
 				.AllAsNoTracking<Category>()
-				.Select(x => new HouseCategoryOptionModel()
+				.Select(c => new HouseCategoryOptionModel()
 				{
-					Id = x.Id,
-					Name = x.Name,
+					Id = c.Id,
+					Name = c.Name,
 				})
+				.ToListAsync();
+
+		public async Task<IEnumerable<string>> GetCategoriesNamesAsync()
+			=> await repository
+				.AllAsNoTracking<Category>()
+				.Select(c => c.Name)
 				.ToListAsync();
 
 		public async Task<bool> HasCategoryWithGivenId(int id)
