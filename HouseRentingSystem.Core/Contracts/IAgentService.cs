@@ -1,4 +1,4 @@
-﻿using HouseRentingSystem.Core.Models.Agents;
+﻿using HouseRentingSystem.Core.Models.Agent;
 
 namespace HouseRentingSystem.Core.Contracts
 {
