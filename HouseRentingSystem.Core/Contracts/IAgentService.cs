@@ -7,6 +7,6 @@ namespace HouseRentingSystem.Core.Contracts
         Task<bool> IsAgentAsync(Guid userId);
         Task<bool> HasAgentWithGivenPhoneNumberAsync(string phoneNumber);
         Task CreateAsync(Guid userId, BecomeAgentFormModel model);
-		Task<Guid> GetAgentIdAsync(Guid userId);
+		Task<Guid?> GetAgentIdAsync(Guid userId);
 	}
 }

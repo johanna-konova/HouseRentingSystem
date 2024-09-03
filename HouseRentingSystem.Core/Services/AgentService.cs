@@ -27,10 +27,10 @@ namespace HouseRentingSystem.Core.Services
             await repository.SaveChangesAsync();
 		}
 
-        public async Task<Guid> GetAgentIdAsync(Guid userId)
+        public async Task<Guid?> GetAgentIdAsync(Guid userId)
             => (await repository
                 .AllAsNoTracking<Agent>()
-                .FirstAsync(a => a.UserId == userId))
+                .FirstOrDefaultAsync(a => a.UserId == userId))?
                 .Id;
 
 		public async Task<bool> HasAgentWithGivenPhoneNumberAsync(string phoneNumber)
