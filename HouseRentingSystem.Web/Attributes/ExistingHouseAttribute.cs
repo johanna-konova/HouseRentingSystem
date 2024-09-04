@@ -9,7 +9,7 @@ using static HouseRentingSystem.Core.Constants.MessageConstants;
 
 namespace HouseRentingSystem.Web.Attributes
 {
-    public class ExistingPageAttribute : ActionFilterAttribute
+    public class ExistingHouseAttribute : ActionFilterAttribute
     {
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
@@ -26,7 +26,7 @@ namespace HouseRentingSystem.Web.Attributes
                     return;
                 }
 
-                if (await houseService!.HasHouseWithGivenId(houseId))
+                if (await houseService!.HasHouseWithGivenIdAsync(houseId))
                 {
                     await next();
                     return;
