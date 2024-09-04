@@ -23,7 +23,7 @@ namespace HouseRentingSystem.Infrastructure.Models
 
         [Required]
         [StringLength(AddressMaxLength)]
-        public string Address { get; init; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
 
         [Required]
         [StringLength(DescriptionMaxLength)]

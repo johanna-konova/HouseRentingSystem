@@ -11,7 +11,10 @@ namespace HouseRentingSystem.Core.Contracts
         Task<AllHousesQueryModel> GetAllAsync(AllHousesQueryModel model);
         Task<IEnumerable<HouseViewModel>> GetManagedByAgentIdAsync(Guid agentId);
         Task<IEnumerable<HouseViewModel>> GetRentedByUserIdAsync(Guid userId);
-        Task<bool> HasHouseWithGivenId(Guid id);
+        Task<bool> HasHouseWithGivenIdAsync(Guid id);
         Task<HouseDetailsViewModel?> GetByIdAsync(Guid id);
+        Task<bool> IsAgentHouseCreatorAsync(Guid houseId, Guid userId);
+        Task<int> GetHouseCategoryIdAsync(Guid houseId);
+        Task EditAsync(Guid houseId, HouseFormModel model);
     }
 }

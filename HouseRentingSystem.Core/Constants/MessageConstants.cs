@@ -13,6 +13,8 @@
 		public const string AlreadyAgent = "You are already an agent.";
 
         public const string MustBeAgent = "You must be an agent to add new house.";
+        
+        public const string MustBeHouseCreator = "You must be the agent and creator of this house to access this page.";
 
         public const string PhoneExists = "Phone number already exists. Enter another one.";
 

@@ -41,7 +41,21 @@ namespace HouseRentingSystem.Core.Services
             return newHouse.Id;
 		}
 
-		public async Task<AllHousesQueryModel> GetAllAsync(AllHousesQueryModel model)
+        public async Task EditAsync(Guid houseId, HouseFormModel model)
+        {
+            var houseToEdit = await repository.FindAsync<House>(houseId);
+
+            houseToEdit!.Title = model.Title;
+            houseToEdit.Address = model.Address;
+            houseToEdit.Description = model.Description;
+            houseToEdit.ImageUrl = model.ImageUrl;
+            houseToEdit.PricePerMonth = model.PricePerMonth;
+            houseToEdit.CategoryId = model.CategoryId;
+
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task<AllHousesQueryModel> GetAllAsync(AllHousesQueryModel model)
 		{
             var housesQuery = repository.AllAsNoTracking<House>();
 
@@ -113,7 +127,9 @@ namespace HouseRentingSystem.Core.Services
                     },
                 })
                 .FirstOrDefaultAsync();
-                
+
+        public async Task<int> GetHouseCategoryIdAsync(Guid houseId)
+            => (await repository.FindAsync<House>(houseId))!.CategoryId;
 
         public async Task<IEnumerable<IndexViewModel>> GetLastThreeAsync()
             => await repository
@@ -146,7 +162,7 @@ namespace HouseRentingSystem.Core.Services
             return await ProjectToModel(housesQuery);
         }
 
-        public async Task<bool> HasHouseWithGivenId(Guid id)
+        public async Task<bool> HasHouseWithGivenIdAsync(Guid id)
             => await repository
                 .AllAsNoTracking<House>()
                 .AnyAsync(h => h.Id == id && h.IsActive);
@@ -155,6 +171,19 @@ namespace HouseRentingSystem.Core.Services
             => await repository
                 .AllAsNoTracking<House>()
                 .AnyAsync(h => h.RenterId == userId);
+
+        public async Task<bool> IsAgentHouseCreatorAsync(Guid houseId, Guid userId)
+        {
+            var house = await repository.FindAsync<House>(houseId);
+            var agent = await repository.FindAsync<Agent>(house!.AgentId);
+
+            if (agent!.UserId != userId)
+            {
+                return false;
+            }
+
+            return true;
+        }
 
         private async Task<IEnumerable<HouseViewModel>> ProjectToModel(IQueryable<House> housesQuery)
             => await housesQuery

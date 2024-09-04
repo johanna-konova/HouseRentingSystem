@@ -52,7 +52,7 @@ namespace HouseRentingSystem.Controllers
 		}
 
 		[AllowAnonymous]
-		[ExistingPage]
+		[ExistingHouse]
 		public async Task<IActionResult> Details(string id)
         {
             var house = await houseService.GetByIdAsync(Guid.Parse(id));
@@ -60,7 +60,7 @@ namespace HouseRentingSystem.Controllers
             return View(house);
 		}
 
-		[AgentAttribute]
+		[Agent]
 		public async Task<IActionResult> Add()
 		{
 			var model = new HouseFormModel()
@@ -71,6 +71,7 @@ namespace HouseRentingSystem.Controllers
 			return View(model);
 		}
 
+		[Agent]
 		[HttpPost]
 		public async Task<IActionResult> Add(HouseFormModel model)
 		{
@@ -91,15 +92,45 @@ namespace HouseRentingSystem.Controllers
 			return RedirectToAction(nameof(Details), new { id = newHouseId });
 		}
 
-		public async Task<IActionResult> Edit(int id)
+		[ExistingHouse]
+		[Creator]
+		public async Task<IActionResult> Edit(string id)
 		{
-			return View(new HouseFormModel());
+			var houseToEdit = await houseService.GetByIdAsync(Guid.Parse(id));
+
+			var model = new HouseFormModel()
+			{
+				Title = houseToEdit!.Title,
+				Address = houseToEdit.Address,
+				Description = houseToEdit.Description,
+				ImageUrl = houseToEdit.ImageUrl,
+				PricePerMonth = houseToEdit.PricePerMonth,
+				CategoryId = await houseService.GetHouseCategoryIdAsync(houseToEdit.Id),
+				Categories = await categoryService.GetAllAsync(),
+			};
+
+            return View(model);
 		}
 
+		[ExistingHouse]
+		[Creator]
 		[HttpPost]
-		public async Task<IActionResult> Edit(int id, HouseFormModel model)
-		{
-			return RedirectToAction(nameof(Details), new { id = "1" });
+		public async Task<IActionResult> Edit(string id, HouseFormModel model)
+        {
+            if (await categoryService.HasCategoryWithGivenId(model.CategoryId) == false)
+            {
+                ModelState.AddModelError(nameof(model.CategoryId), NonExistentCategory);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                model.Categories = await categoryService.GetAllAsync();
+                return View(model);
+            }
+
+			await houseService.EditAsync(Guid.Parse(id), model);
+
+            return RedirectToAction(nameof(Details), new { id });
 		}
 
 		public async Task<IActionResult> Delete(int id)
