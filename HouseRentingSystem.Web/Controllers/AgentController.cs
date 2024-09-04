@@ -26,10 +26,10 @@ namespace HouseRentingSystem.Controllers
 
         public IActionResult Index() => RedirectToAction(nameof(Become));
 
-        [NotAgentAttribute]
+        [NotAgent]
 		public IActionResult Become() => View();
 
-		[NotAgentAttribute]
+		[NotAgent]
 		[HttpPost]
 		public async Task<IActionResult> Become(BecomeAgentFormModel model)
         {
