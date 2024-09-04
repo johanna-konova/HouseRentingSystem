@@ -21,6 +21,9 @@ namespace HouseRentingSystem.Infrastructure.Common
         public IQueryable<T> AllAsNoTracking<T>() where T : class
             => DbSet<T>().AsNoTracking();
 
+        public async Task<T?> FindAsync<T>(Guid id) where T : class
+            => await DbSet<T>().FindAsync(id);
+
         public async Task AddAsync<T>(T entity) where T : class
             => await DbSet<T>().AddAsync(entity);
 
