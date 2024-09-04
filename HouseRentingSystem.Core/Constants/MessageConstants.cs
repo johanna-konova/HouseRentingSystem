@@ -18,6 +18,8 @@
 
         public const string HasRents = "You should have no rents to become an agent.";
 
-        public const string NonExistentCategory = "Category does not exist.";
+        public const string NonExistentCategory = "The category does not exist.";
+
+        public const string NonExistentPage = "The page does not exist.";
     }
 }

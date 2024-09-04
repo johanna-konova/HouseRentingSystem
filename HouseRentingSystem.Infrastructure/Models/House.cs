@@ -11,6 +11,7 @@ namespace HouseRentingSystem.Infrastructure.Models
         public House()
         {
             Id = Guid.NewGuid();
+            IsActive = true;
         }
 
         [Key]

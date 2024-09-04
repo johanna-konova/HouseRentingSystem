@@ -5,8 +5,6 @@ using HouseRentingSystem.Core.Models.House.Enums;
 using HouseRentingSystem.Infrastructure.Common;
 using HouseRentingSystem.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Linq;
 
 namespace HouseRentingSystem.Core.Services
@@ -94,7 +92,30 @@ namespace HouseRentingSystem.Core.Services
             return model;
 		}
 
-		public async Task<IEnumerable<IndexViewModel>> GetLastThreeAsync()
+        public async Task<HouseDetailsViewModel?> GetByIdAsync(Guid id)
+            => await repository
+                .AllAsNoTracking<House>()
+                .Where(h => h.Id == id)
+                .Select(h => new HouseDetailsViewModel()
+                {
+                    Id = h.Id,
+                    Title = h.Title,
+                    Address = h.Address,
+                    Description = h.Description,
+                    ImageUrl = h.ImageUrl,
+                    PricePerMonth = h.PricePerMonth,
+                    Category = h.Category.Name,
+                    IsRented = h.RenterId != null,
+                    Agent = new HouseAgentInfoModel ()
+                    {
+                        Email = h.Agent.User.Email!,
+                        PhoneNumber = h.Agent.PhoneNumber,
+                    },
+                })
+                .FirstOrDefaultAsync();
+                
+
+        public async Task<IEnumerable<IndexViewModel>> GetLastThreeAsync()
             => await repository
                 .AllAsNoTracking<House>()
                 .OrderByDescending(h => h.CreatedOn)
@@ -124,6 +145,11 @@ namespace HouseRentingSystem.Core.Services
 
             return await ProjectToModel(housesQuery);
         }
+
+        public async Task<bool> HasHouseWithGivenId(Guid id)
+            => await repository
+                .AllAsNoTracking<House>()
+                .AnyAsync(h => h.Id == id && h.IsActive);
 
         public async Task<bool> HasRentAsync(Guid userId)
             => await repository

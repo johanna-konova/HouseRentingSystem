@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
+
+using static HouseRentingSystem.Core.Constants.MessageTypes;
 using static HouseRentingSystem.Core.Constants.MessageConstants;
 
 namespace HouseRentingSystem.Controllers
@@ -49,13 +51,16 @@ namespace HouseRentingSystem.Controllers
 			return View(userHouse);
 		}
 
-		public async Task<IActionResult> Details(int id)
+		[AllowAnonymous]
+		[ExistingPage]
+		public async Task<IActionResult> Details(string id)
         {
-            var agentId = await agentService.GetAgentIdAsync(User.Id());
-            return View(new HouseDetailsViewModel());
+            var house = await houseService.GetByIdAsync(Guid.Parse(id));
+
+            return View(house);
 		}
 
-		[Agent]
+		[AgentAttribute]
 		public async Task<IActionResult> Add()
 		{
 			var model = new HouseFormModel()
