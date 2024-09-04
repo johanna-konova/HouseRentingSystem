@@ -9,7 +9,7 @@ using static HouseRentingSystem.Core.Constants.MessageConstants;
 
 namespace HouseRentingSystem.Web.Attributes
 {
-	public class NotAgent : ActionFilterAttribute
+	public class NotAgentAttribute : ActionFilterAttribute
 	{
 		public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
 		{
@@ -19,6 +19,7 @@ namespace HouseRentingSystem.Web.Attributes
 			if (agentService == null)
 			{
 				context.Result = new StatusCodeResult(StatusCodes.Status500InternalServerError);
+				return;
 			}
 
             if (await agentService!.IsAgentAsync(context.HttpContext.User.Id()))
@@ -27,9 +28,10 @@ namespace HouseRentingSystem.Web.Attributes
 				controller.TempData[ErrorMessage] = AlreadyAgent;
 
 				context.Result = new RedirectToActionResult(nameof(HouseController.Mine), "House", null);
+				return;
 			}
 
-            await base.OnActionExecutionAsync(context, next);
+            await next();
 		}
 	}
 }
