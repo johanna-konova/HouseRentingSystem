@@ -1,11 +1,12 @@
 ﻿using HouseRentingSystem.Controllers;
 using HouseRentingSystem.Core.Contracts;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.Filters;
+using System.Reflection;
 
-using static HouseRentingSystem.Core.Constants.MessageTypes;
+using static HouseRentingSystem.Web.Attributes.Common.CommonFunctionalities;
 using static HouseRentingSystem.Core.Constants.MessageConstants;
+using static HouseRentingSystem.Core.Constants.MessageTypes;
 
 namespace HouseRentingSystem.Web.Attributes
 {
@@ -13,9 +14,9 @@ namespace HouseRentingSystem.Web.Attributes
     {
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (context.ActionArguments.TryGetValue("id", out var idAsObj)
-                && idAsObj is string id
-                && Guid.TryParse(id, out Guid houseId))
+            Guid houseId = ParseId(context);
+
+            if (houseId != Guid.Empty)
             {
                 IHouseService? houseService =
                     context.HttpContext.RequestServices.GetService<IHouseService>();
@@ -33,10 +34,7 @@ namespace HouseRentingSystem.Web.Attributes
                 }
             }
 
-            var controller = (Controller)context.Controller;
-            controller.TempData[ErrorMessage] = NonExistentPage;
-
-            context.Result = new RedirectToActionResult(nameof(HouseController.All), "House", null);
+            HandleError(context, ErrorMessage, NonExistentPage, nameof(HouseController.All), "House");
         }
     }
 }

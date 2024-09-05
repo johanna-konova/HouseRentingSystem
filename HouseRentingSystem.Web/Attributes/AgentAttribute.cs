@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Security.Claims;
 
+using static HouseRentingSystem.Web.Attributes.Common.CommonFunctionalities;
 using static HouseRentingSystem.Core.Constants.MessageTypes;
 using static HouseRentingSystem.Core.Constants.MessageConstants;
 
@@ -23,12 +24,8 @@ namespace HouseRentingSystem.Web.Attributes
 			}
 
             if (await agentService!.IsAgentAsync(context.HttpContext.User.Id()) == false)
-			{
-				var controller = (Controller)context.Controller;
-				controller.TempData[ErrorMessage] = MustBeAgent;
-
-				context.Result = new RedirectToActionResult(nameof(AgentController.Become), "Agent", null);
-				return;
+            {
+                HandleError(context, ErrorMessage, MustBeAgent, nameof(AgentController.Become), "Agent");
 			}
 
             await next();
