@@ -55,7 +55,7 @@ namespace HouseRentingSystem.Controllers
 		[ExistingHouse]
 		public async Task<IActionResult> Details(string id)
         {
-            var house = await houseService.GetByIdAsync(Guid.Parse(id));
+            var house = await houseService.GetDetailsAsync(Guid.Parse(id));
 
             return View(house);
 		}
@@ -96,7 +96,7 @@ namespace HouseRentingSystem.Controllers
 		[Creator]
 		public async Task<IActionResult> Edit(string id)
 		{
-			var houseToEdit = await houseService.GetByIdAsync(Guid.Parse(id));
+			var houseToEdit = await houseService.GetDetailsAsync(Guid.Parse(id));
 
 			var model = new HouseFormModel()
 			{
@@ -133,15 +133,23 @@ namespace HouseRentingSystem.Controllers
             return RedirectToAction(nameof(Details), new { id });
 		}
 
-		public async Task<IActionResult> Delete(int id)
+		[ExistingHouse]
+		[Creator]
+		public async Task<IActionResult> Delete(string id)
 		{
-			return View(new HouseFormModel());
+			var houseToDelete = await houseService.GetDetailsForDeleteFormAsync(Guid.Parse(id));
+
+            return View(houseToDelete);
 		}
 
+		[ExistingHouse]
+		[Creator]
 		[HttpPost]
-		public async Task<IActionResult> Delete(HouseFormModel model)
+		public async Task<IActionResult> Delete(HouseDeleteViewModel model)
 		{
-			return RedirectToAction(nameof(All));
+			await houseService.DeleteAsync(model.Id);
+
+            return RedirectToAction(nameof(All));
 		}
 
 		[HttpPost]

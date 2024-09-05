@@ -41,6 +41,15 @@ namespace HouseRentingSystem.Core.Services
             return newHouse.Id;
 		}
 
+        public async Task DeleteAsync(Guid houseId)
+        {
+            var houseToDelete = await repository.FindAsync<House>(houseId);
+            
+            houseToDelete!.IsActive = false;
+            
+            await repository.SaveChangesAsync();
+        }
+
         public async Task EditAsync(Guid houseId, HouseFormModel model)
         {
             var houseToEdit = await repository.FindAsync<House>(houseId);
@@ -106,7 +115,7 @@ namespace HouseRentingSystem.Core.Services
             return model;
 		}
 
-        public async Task<HouseDetailsViewModel?> GetByIdAsync(Guid id)
+        public async Task<HouseDetailsViewModel?> GetDetailsAsync(Guid id)
             => await repository
                 .AllAsNoTracking<House>()
                 .Where(h => h.Id == id)
@@ -125,6 +134,19 @@ namespace HouseRentingSystem.Core.Services
                         Email = h.Agent.User.Email!,
                         PhoneNumber = h.Agent.PhoneNumber,
                     },
+                })
+                .FirstOrDefaultAsync();
+
+        public async Task<HouseDeleteViewModel?> GetDetailsForDeleteFormAsync(Guid id)
+            => await repository
+                .AllAsNoTracking<House>()
+                .Where(h => h.Id == id)
+                .Select(h => new HouseDeleteViewModel()
+                {
+                    Id = h.Id,
+                    Title = h.Title,
+                    Address = h.Address,
+                    ImageUrl = h.ImageUrl,
                 })
                 .FirstOrDefaultAsync();
 
