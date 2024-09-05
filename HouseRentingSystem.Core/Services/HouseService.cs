@@ -66,7 +66,9 @@ namespace HouseRentingSystem.Core.Services
 
         public async Task<AllHousesQueryModel> GetAllAsync(AllHousesQueryModel model)
 		{
-            var housesQuery = repository.AllAsNoTracking<House>();
+            var housesQuery = repository
+                .AllAsNoTracking<House>()
+                .Where(h => h.IsActive);
 
             if (!string.IsNullOrEmpty(model.Category))
             {
@@ -156,6 +158,7 @@ namespace HouseRentingSystem.Core.Services
         public async Task<IEnumerable<IndexViewModel>> GetLastThreeAsync()
             => await repository
                 .AllAsNoTracking<House>()
+                .Where(h => h.IsActive)
                 .OrderByDescending(h => h.CreatedOn)
                 .Take(3)
                 .Select(h => new IndexViewModel()
@@ -170,7 +173,7 @@ namespace HouseRentingSystem.Core.Services
         {
             var housesQuery = repository
                 .AllAsNoTracking<House>()
-                .Where(h => h.AgentId == agentId);
+                .Where(h => h.AgentId == agentId && h.IsActive);
 
             return await ProjectToModel(housesQuery);
         }
@@ -179,7 +182,7 @@ namespace HouseRentingSystem.Core.Services
         {
             var housesQuery = repository
                 .AllAsNoTracking<House>()
-                .Where(h => h.RenterId == userId);
+                .Where(h => h.RenterId == userId && h.IsActive);
 
             return await ProjectToModel(housesQuery);
         }
@@ -187,11 +190,13 @@ namespace HouseRentingSystem.Core.Services
         public async Task<bool> HasHouseWithGivenIdAsync(Guid id)
             => await repository
                 .AllAsNoTracking<House>()
-                .AnyAsync(h => h.Id == id && h.IsActive);
+                .Where(h => h.IsActive)
+                .AnyAsync(h => h.Id == id);
 
         public async Task<bool> HasRentAsync(Guid userId)
             => await repository
                 .AllAsNoTracking<House>()
+                .Where(h => h.IsActive)
                 .AnyAsync(h => h.RenterId == userId);
 
         public async Task<bool> IsAgentHouseCreatorAsync(Guid houseId, Guid userId)
