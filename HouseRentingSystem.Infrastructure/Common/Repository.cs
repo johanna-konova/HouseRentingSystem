@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace HouseRentingSystem.Infrastructure.Common
 {
