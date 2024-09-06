@@ -219,6 +219,18 @@ namespace HouseRentingSystem.Core.Services
             await repository.SaveChangesAsync();
         }
 
+        public async Task LeaveAsync(Guid houseId)
+        {
+            var houseToLeave = await repository.FindAsync<House>(houseId);
+
+            houseToLeave!.RenterId = null;
+
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsRentedByUserWithGivenId(Guid houseId, Guid userId)
+            => (await repository.FindAsync<House>(houseId))!.RenterId == userId;
+
         private async Task<IEnumerable<HouseViewModel>> ProjectToModel(IQueryable<House> housesQuery)
             => await housesQuery
                 .Select(h => new HouseViewModel()

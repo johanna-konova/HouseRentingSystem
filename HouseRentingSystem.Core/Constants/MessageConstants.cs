@@ -16,6 +16,8 @@
 
 		public const string AlreadyRented = "The property is already rented.";
 
+        public const string OnlyPropertyRenterIsAllowedToLeaveIt = "Only the renter of the property is allowed to leave it.";
+
         public const string MustBeAgent = "You must be an agent to add new house.";
         
         public const string MustBeHouseCreator = "You must be the agent and creator of this house to access this page.";

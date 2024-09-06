@@ -3,10 +3,7 @@ using HouseRentingSystem.Core.Models.House;
 using HouseRentingSystem.Web.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
-
-using static HouseRentingSystem.Core.Constants.MessageTypes;
 using static HouseRentingSystem.Core.Constants.MessageConstants;
 
 namespace HouseRentingSystem.Controllers
@@ -163,10 +160,14 @@ namespace HouseRentingSystem.Controllers
             return RedirectToAction(nameof(Mine));
 		}
 
+		[ExistingHouse]
+		[Rented]
 		[HttpPost]
-		public async Task<IActionResult> Leave(int id)
+		public async Task<IActionResult> Leave(string id)
 		{
-			return RedirectToAction(nameof(Mine));
+			await houseService.LeaveAsync(Guid.Parse(id));
+
+            return RedirectToAction(nameof(Mine));
 		}
 	}
 }
