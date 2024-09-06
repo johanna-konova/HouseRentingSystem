@@ -7,6 +7,7 @@ using System.Security.Claims;
 using static HouseRentingSystem.Web.Attributes.Common.CommonFunctionalities;
 using static HouseRentingSystem.Core.Constants.MessageTypes;
 using static HouseRentingSystem.Core.Constants.MessageConstants;
+using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace HouseRentingSystem.Web.Attributes
 {
@@ -25,7 +26,22 @@ namespace HouseRentingSystem.Web.Attributes
 
 			if (await agentService!.IsAgentAsync(context.HttpContext.User.Id()))
 			{
-				HandleError(context, ErrorMessage, AlreadyAgent, nameof(HouseController.Mine), "House");
+				string message;
+				string controllerName;
+
+                if (((ControllerActionDescriptor)context.ActionDescriptor).ActionName == "Become")
+                {
+					message = AlreadyAgent;
+					controllerName = nameof(HouseController.Mine);
+                }
+				else
+				{
+					message = AgentIsNotAllowedToRent;
+					controllerName = nameof(HouseController.All);
+				}
+
+				HandleError(context, ErrorMessage, message, controllerName, "House");
+				return;
 			}
 
             await next();
