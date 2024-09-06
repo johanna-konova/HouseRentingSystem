@@ -199,17 +199,24 @@ namespace HouseRentingSystem.Core.Services
                 .Where(h => h.IsActive)
                 .AnyAsync(h => h.RenterId == userId);
 
+        public async Task<bool> IsRented(Guid houseId)
+            => (await repository.FindAsync<House>(houseId))!.RenterId != null;
+
         public async Task<bool> IsAgentHouseCreatorAsync(Guid houseId, Guid userId)
         {
             var house = await repository.FindAsync<House>(houseId);
             var agent = await repository.FindAsync<Agent>(house!.AgentId);
 
-            if (agent!.UserId != userId)
-            {
-                return false;
-            }
+            return agent!.UserId == userId;
+        }
 
-            return true;
+        public async Task RentAsync(Guid houseId, Guid userId)
+        {
+            var houseToRent = await repository.FindAsync<House>(houseId);
+
+            houseToRent!.RenterId = userId;
+
+            await repository.SaveChangesAsync();
         }
 
         private async Task<IEnumerable<HouseViewModel>> ProjectToModel(IQueryable<House> housesQuery)

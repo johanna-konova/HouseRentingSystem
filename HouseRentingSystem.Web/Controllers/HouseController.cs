@@ -152,10 +152,15 @@ namespace HouseRentingSystem.Controllers
             return RedirectToAction(nameof(All));
 		}
 
+		[NotAgent]
+		[ExistingHouse]
+		[NotReneted]
 		[HttpPost]
-		public async Task<IActionResult> Rent(int id)
+		public async Task<IActionResult> Rent(string id)
 		{
-			return RedirectToAction(nameof(Mine));
+			await houseService.RentAsync(Guid.Parse(id), User.Id());
+
+            return RedirectToAction(nameof(Mine));
 		}
 
 		[HttpPost]
