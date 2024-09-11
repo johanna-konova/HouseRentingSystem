@@ -9,6 +9,7 @@ namespace HouseRentingSystem.Core.Contracts
         Task<IEnumerable<HouseViewModel>> GetManagedByAgentIdAsync(Guid agentId);
         Task<IEnumerable<HouseViewModel>> GetRentedByUserIdAsync(Guid userId);
         Task<AllHousesQueryModel> GetAllAsync(AllHousesQueryModel model);
+        Task<HouseFormModel?> AssembleHouseFormModelAsync(Guid id);
         Task<HouseDetailsViewModel?> GetDetailsAsync(Guid id);
         Task<HouseDeleteViewModel?> GetDetailsForDeleteFormAsync(Guid id);
         Task<int> GetHouseCategoryIdAsync(Guid houseId);

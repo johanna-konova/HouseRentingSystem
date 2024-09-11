@@ -103,6 +103,30 @@ namespace HouseRentingSystem.Core.Services
             return model;
 		}
 
+        public async Task<HouseFormModel?> AssembleHouseFormModelAsync(Guid id)
+        {
+            var house = await repository
+                .AllAsNoTracking<House>()
+                .Where(h => h.Id == id)
+                .Select(h => new HouseFormModel()
+                {
+                    Title = h.Title,
+                    Address = h.Address,
+                    Description = h.Description,
+                    ImageUrl = h.ImageUrl,
+                    PricePerMonth = h.PricePerMonth,
+                    CategoryId = h.CategoryId,
+                })
+                .FirstOrDefaultAsync();
+
+            if (house != null)
+            {
+                house.Categories = await categoryService.GetAllAsync();
+            }
+
+            return house;
+        }
+
         public async Task<HouseDetailsViewModel?> GetDetailsAsync(Guid id)
             => await repository
                 .AllAsNoTracking<House>()

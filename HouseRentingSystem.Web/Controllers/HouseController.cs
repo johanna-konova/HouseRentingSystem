@@ -94,20 +94,9 @@ namespace HouseRentingSystem.Web.Controllers
         [Creator]
         public async Task<IActionResult> Edit(string id)
         {
-            var houseToEdit = await houseService.GetDetailsAsync(Guid.Parse(id));
+            var houseToEdit = await houseService.AssembleHouseFormModelAsync(Guid.Parse(id));
 
-            var model = new HouseFormModel()
-            {
-                Title = houseToEdit!.Title,
-                Address = houseToEdit.Address,
-                Description = houseToEdit.Description,
-                ImageUrl = houseToEdit.ImageUrl,
-                PricePerMonth = houseToEdit.PricePerMonth,
-                CategoryId = await houseService.GetHouseCategoryIdAsync(houseToEdit.Id),
-                Categories = await categoryService.GetAllAsync(),
-            };
-
-            return View(model);
+            return View(houseToEdit);
         }
 
         [ExistingHouse]
