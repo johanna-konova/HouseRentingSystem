@@ -22,47 +22,33 @@ namespace HouseRentingSystem.Core.Services
             categoryService = _categoryService;
         }
 
-		public async Task<Guid> CreateAsync(HouseFormModel model, Guid agentId)
-		{
-            var newHouse = new House()
-            {
-                Title = model.Title,
-                Address = model.Address,
-                Description = model.Description,
-                ImageUrl = model.ImageUrl,
-                PricePerMonth = model.PricePerMonth,
-                CategoryId = model.CategoryId,
-                AgentId = agentId,
-            };
+        public async Task<IEnumerable<IndexViewModel>> GetLastThreeAsync()
+            => await repository
+                .AllAsNoTracking<House>()
+                .Where(h => h.IsActive)
+                .OrderByDescending(h => h.CreatedOn)
+                .Take(3)
+                .Select(h => new IndexViewModel()
+                {
+                    Id = h.Id,
+                    Title = h.Title,
+                    ImageUrl = h.ImageUrl,
+                })
+                .ToListAsync();
 
-            await repository.AddAsync(newHouse);
-            await repository.SaveChangesAsync();
+        public async Task<IEnumerable<HouseViewModel>> GetManagedByAgentIdAsync(Guid agentId)
+            => await repository
+                .AllAsNoTracking<House>()
+                .Where(h => h.AgentId == agentId && h.IsActive)
+                .ProjectToHouseViewModel()
+                .ToListAsync();
 
-            return newHouse.Id;
-		}
-
-        public async Task DeleteAsync(Guid houseId)
-        {
-            var houseToDelete = await repository.FindAsync<House>(houseId);
-            
-            houseToDelete!.IsActive = false;
-            
-            await repository.SaveChangesAsync();
-        }
-
-        public async Task EditAsync(Guid houseId, HouseFormModel model)
-        {
-            var houseToEdit = await repository.FindAsync<House>(houseId);
-
-            houseToEdit!.Title = model.Title;
-            houseToEdit.Address = model.Address;
-            houseToEdit.Description = model.Description;
-            houseToEdit.ImageUrl = model.ImageUrl;
-            houseToEdit.PricePerMonth = model.PricePerMonth;
-            houseToEdit.CategoryId = model.CategoryId;
-
-            await repository.SaveChangesAsync();
-        }
+        public async Task<IEnumerable<HouseViewModel>> GetRentedByUserIdAsync(Guid userId)
+            => await repository
+                .AllAsNoTracking<House>()
+                .Where(h => h.RenterId == userId && h.IsActive)
+                .ProjectToHouseViewModel()
+                .ToListAsync();
 
         public async Task<AllHousesQueryModel> GetAllAsync(AllHousesQueryModel model)
 		{
@@ -155,43 +141,19 @@ namespace HouseRentingSystem.Core.Services
         public async Task<int> GetHouseCategoryIdAsync(Guid houseId)
             => (await repository.FindAsync<House>(houseId))!.CategoryId;
 
-        public async Task<IEnumerable<IndexViewModel>> GetLastThreeAsync()
-            => await repository
-                .AllAsNoTracking<House>()
-                .Where(h => h.IsActive)
-                .OrderByDescending(h => h.CreatedOn)
-                .Take(3)
-                .Select(h => new IndexViewModel()
-                {
-                    Id = h.Id,
-                    Title = h.Title,
-                    ImageUrl = h.ImageUrl,
-                })
-                .ToListAsync();
-
-        public async Task<IEnumerable<HouseViewModel>> GetManagedByAgentIdAsync(Guid agentId)
-        {
-            var housesQuery = repository
-                .AllAsNoTracking<House>()
-                .Where(h => h.AgentId == agentId && h.IsActive);
-
-            return await ProjectToModel(housesQuery);
-        }
-
-        public async Task<IEnumerable<HouseViewModel>> GetRentedByUserIdAsync(Guid userId)
-        {
-            var housesQuery = repository
-                .AllAsNoTracking<House>()
-                .Where(h => h.RenterId == userId && h.IsActive);
-
-            return await ProjectToModel(housesQuery);
-        }
-
         public async Task<bool> HasHouseWithGivenIdAsync(Guid id)
             => await repository
                 .AllAsNoTracking<House>()
                 .Where(h => h.IsActive)
                 .AnyAsync(h => h.Id == id);
+
+        public async Task<bool> IsAgentHouseCreatorAsync(Guid houseId, Guid userId)
+        {
+            var house = await repository.FindAsync<House>(houseId);
+            var agent = await repository.FindAsync<Agent>(house!.AgentId);
+
+            return agent!.UserId == userId;
+        }
 
         public async Task<bool> HasRentAsync(Guid userId)
             => await repository
@@ -202,12 +164,49 @@ namespace HouseRentingSystem.Core.Services
         public async Task<bool> IsRented(Guid houseId)
             => (await repository.FindAsync<House>(houseId))!.RenterId != null;
 
-        public async Task<bool> IsAgentHouseCreatorAsync(Guid houseId, Guid userId)
-        {
-            var house = await repository.FindAsync<House>(houseId);
-            var agent = await repository.FindAsync<Agent>(house!.AgentId);
+        public async Task<bool> IsRentedByUserWithGivenId(Guid houseId, Guid userId)
+            => (await repository.FindAsync<House>(houseId))!.RenterId == userId;
 
-            return agent!.UserId == userId;
+		public async Task<Guid> CreateAsync(HouseFormModel model, Guid agentId)
+		{
+            var newHouse = new House()
+            {
+                Title = model.Title,
+                Address = model.Address,
+                Description = model.Description,
+                ImageUrl = model.ImageUrl,
+                PricePerMonth = model.PricePerMonth,
+                CategoryId = model.CategoryId,
+                AgentId = agentId,
+            };
+
+            await repository.AddAsync(newHouse);
+            await repository.SaveChangesAsync();
+
+            return newHouse.Id;
+		}
+
+        public async Task EditAsync(Guid houseId, HouseFormModel model)
+        {
+            var houseToEdit = await repository.FindAsync<House>(houseId);
+
+            houseToEdit!.Title = model.Title;
+            houseToEdit.Address = model.Address;
+            houseToEdit.Description = model.Description;
+            houseToEdit.ImageUrl = model.ImageUrl;
+            houseToEdit.PricePerMonth = model.PricePerMonth;
+            houseToEdit.CategoryId = model.CategoryId;
+
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(Guid houseId)
+        {
+            var houseToDelete = await repository.FindAsync<House>(houseId);
+            
+            houseToDelete!.IsActive = false;
+            
+            await repository.SaveChangesAsync();
         }
 
         public async Task RentAsync(Guid houseId, Guid userId)
@@ -227,21 +226,5 @@ namespace HouseRentingSystem.Core.Services
 
             await repository.SaveChangesAsync();
         }
-
-        public async Task<bool> IsRentedByUserWithGivenId(Guid houseId, Guid userId)
-            => (await repository.FindAsync<House>(houseId))!.RenterId == userId;
-
-        private async Task<IEnumerable<HouseViewModel>> ProjectToModel(IQueryable<House> housesQuery)
-            => await housesQuery
-                .Select(h => new HouseViewModel()
-                {
-                    Id = h.Id,
-                    Title = h.Title,
-                    Address = h.Address,
-                    ImageUrl = h.ImageUrl,
-                    PricePerMonth = h.PricePerMonth,
-                    IsRented = h.RenterId != null,
-                })
-                .ToListAsync();
     }
 }

@@ -1,8 +1,8 @@
 ﻿using HouseRentingSystem.Core.Models.Houses;
 using System.ComponentModel.DataAnnotations;
 
+using static HouseRentingSystem.Core.Constants.ModelsConstants;
 using static HouseRentingSystem.Infrastructure.DataConstants.House;
-using static HouseRentingSystem.Core.Constants.MessageConstants;
 
 namespace HouseRentingSystem.Core.Models.House
 {
@@ -34,11 +34,12 @@ namespace HouseRentingSystem.Core.Models.House
         [Display(Name = "Image URL")]
         public string ImageUrl { get; set; } = string.Empty;
 
+        //[Required(ErrorMessage = RequiredMessage)]
         [Range(
             typeof(decimal),
             PricePerMonthMinValue,
             PricePerMonthMaxValue,
-            ErrorMessage = InvalidPricePerMonthRange)]
+            ErrorMessageResourceType = typeof(Resources.ValidationMessages), ErrorMessageResourceName = "InvalidNumberType")]
         [Display(Name = "Price per month")]
         public decimal PricePerMonth { get; set; }
 

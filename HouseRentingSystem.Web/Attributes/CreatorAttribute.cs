@@ -1,5 +1,4 @@
-﻿using HouseRentingSystem.Controllers;
-using HouseRentingSystem.Core.Contracts;
+﻿using HouseRentingSystem.Core.Contracts;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -7,6 +6,7 @@ using System.Security.Claims;
 using static HouseRentingSystem.Web.Attributes.Common.CommonFunctionalities;
 using static HouseRentingSystem.Core.Constants.MessageTypes;
 using static HouseRentingSystem.Core.Constants.MessageConstants;
+using HouseRentingSystem.Web.Controllers;
 
 namespace HouseRentingSystem.Web.Attributes
 {

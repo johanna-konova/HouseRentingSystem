@@ -1,5 +1,4 @@
-﻿using HouseRentingSystem.Controllers;
-using HouseRentingSystem.Core.Contracts;
+﻿using HouseRentingSystem.Core.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Security.Claims;
@@ -8,10 +7,11 @@ using static HouseRentingSystem.Web.Attributes.Common.CommonFunctionalities;
 using static HouseRentingSystem.Core.Constants.MessageTypes;
 using static HouseRentingSystem.Core.Constants.MessageConstants;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using HouseRentingSystem.Web.Controllers;
 
 namespace HouseRentingSystem.Web.Attributes
 {
-	public class NotAgentAttribute : ActionFilterAttribute
+    public class NotAgentAttribute : ActionFilterAttribute
 	{
 		public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
 		{

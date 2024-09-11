@@ -15,18 +15,6 @@ namespace HouseRentingSystem.Core.Services
             repository = _repository;
         }
 
-		public async Task CreateAsync(Guid userId, BecomeAgentFormModel model)
-		{
-            var newAgent = new Agent()
-			{
-				PhoneNumber = model.PhoneNumber,
-                UserId = userId,
-			};
-
-			await repository.AddAsync(newAgent);
-            await repository.SaveChangesAsync();
-		}
-
         public async Task<Guid?> GetAgentIdAsync(Guid userId)
             => (await repository
                 .AllAsNoTracking<Agent>()
@@ -42,5 +30,17 @@ namespace HouseRentingSystem.Core.Services
             => await repository
                 .AllAsNoTracking<Agent>()
                 .AnyAsync(a => a.UserId == userId);
+
+		public async Task CreateAsync(Guid userId, BecomeAgentFormModel model)
+		{
+            var newAgent = new Agent()
+			{
+				PhoneNumber = model.PhoneNumber,
+                UserId = userId,
+			};
+
+			await repository.AddAsync(newAgent);
+            await repository.SaveChangesAsync();
+		}
     }
 }
