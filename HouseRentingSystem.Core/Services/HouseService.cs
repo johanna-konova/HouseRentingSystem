@@ -139,7 +139,7 @@ namespace HouseRentingSystem.Core.Services
                 .FirstOrDefaultAsync();
 
         public async Task<int> GetHouseCategoryIdAsync(Guid houseId)
-            => (await repository.FindAsync<House>(houseId))!.CategoryId;
+            => (await repository.GetByIdAsync<House>(houseId))!.CategoryId;
 
         public async Task<bool> HasHouseWithGivenIdAsync(Guid id)
             => await repository
@@ -149,8 +149,8 @@ namespace HouseRentingSystem.Core.Services
 
         public async Task<bool> IsAgentHouseCreatorAsync(Guid houseId, Guid userId)
         {
-            var house = await repository.FindAsync<House>(houseId);
-            var agent = await repository.FindAsync<Agent>(house!.AgentId);
+            var house = await repository.GetByIdAsync<House>(houseId);
+            var agent = await repository.GetByIdAsync<Agent>(house!.AgentId);
 
             return agent!.UserId == userId;
         }
@@ -162,10 +162,10 @@ namespace HouseRentingSystem.Core.Services
                 .AnyAsync(h => h.RenterId == userId);
 
         public async Task<bool> IsRented(Guid houseId)
-            => (await repository.FindAsync<House>(houseId))!.RenterId != null;
+            => (await repository.GetByIdAsync<House>(houseId))!.RenterId != null;
 
         public async Task<bool> IsRentedByUserWithGivenId(Guid houseId, Guid userId)
-            => (await repository.FindAsync<House>(houseId))!.RenterId == userId;
+            => (await repository.GetByIdAsync<House>(houseId))!.RenterId == userId;
 
 		public async Task<Guid> CreateAsync(HouseFormModel model, Guid agentId)
 		{
@@ -188,7 +188,7 @@ namespace HouseRentingSystem.Core.Services
 
         public async Task EditAsync(Guid houseId, HouseFormModel model)
         {
-            var houseToEdit = await repository.FindAsync<House>(houseId);
+            var houseToEdit = await repository.GetByIdAsync<House>(houseId);
 
             houseToEdit!.Title = model.Title;
             houseToEdit.Address = model.Address;
@@ -202,7 +202,7 @@ namespace HouseRentingSystem.Core.Services
 
         public async Task DeleteAsync(Guid houseId)
         {
-            var houseToDelete = await repository.FindAsync<House>(houseId);
+            var houseToDelete = await repository.GetByIdAsync<House>(houseId);
             
             houseToDelete!.IsActive = false;
             
@@ -211,7 +211,7 @@ namespace HouseRentingSystem.Core.Services
 
         public async Task RentAsync(Guid houseId, Guid userId)
         {
-            var houseToRent = await repository.FindAsync<House>(houseId);
+            var houseToRent = await repository.GetByIdAsync<House>(houseId);
 
             houseToRent!.RenterId = userId;
 
@@ -220,7 +220,7 @@ namespace HouseRentingSystem.Core.Services
 
         public async Task LeaveAsync(Guid houseId)
         {
-            var houseToLeave = await repository.FindAsync<House>(houseId);
+            var houseToLeave = await repository.GetByIdAsync<House>(houseId);
 
             houseToLeave!.RenterId = null;
 
