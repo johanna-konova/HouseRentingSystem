@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-using static HouseRentingSystem.Core.Constants.ModelsConstants;
+using static HouseRentingSystem.Core.Constants.ModelsMessagesConstants;
 
 namespace HouseRentingSystem.Web.Controllers
 {

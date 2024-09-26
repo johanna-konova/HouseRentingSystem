@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using static HouseRentingSystem.Core.Constants.ModelsConstants;
+using static HouseRentingSystem.Core.Constants.ModelsMessagesConstants;
 using static HouseRentingSystem.Infrastructure.DataConstants.Agent;
 
 namespace HouseRentingSystem.Core.Models.Agent

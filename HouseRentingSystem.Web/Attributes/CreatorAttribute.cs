@@ -35,7 +35,7 @@ namespace HouseRentingSystem.Web.Attributes
                 }
             }
 
-            HandleError(context, ErrorMessage, MustBeHouseCreator, nameof(HouseController.Mine), "House");
+            HandleError(context, ErrorMessage, MustBeAdminOrHouseCreator, nameof(HouseController.Mine), "House");
         }
     }
 }
