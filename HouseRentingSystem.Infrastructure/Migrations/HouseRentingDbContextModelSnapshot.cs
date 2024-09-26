@@ -125,23 +125,6 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Cottage"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Single-Family"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Duplex"
-                        });
                 });
 
             modelBuilder.Entity("HouseRentingSystem.Infrastructure.Models.House", b =>
@@ -162,9 +145,7 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -177,9 +158,7 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                         .HasColumnType("nvarchar(2048)");
 
                     b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("PricePerMonth")
                         .HasPrecision(18, 2)
@@ -194,9 +173,7 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("UpdatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -207,51 +184,6 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                     b.HasIndex("RenterId");
 
                     b.ToTable("Houses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("7f0ba81b-5e04-4bc2-a7a8-515a25acd191"),
-                            Address = "North London, UK (near the border)",
-                            AgentId = new Guid("1f233f72-8c64-4bf0-9b0f-6d58a0c9fa7e"),
-                            CategoryId = 3,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A big house for your whole family. Don't miss to buy a house with three bedrooms.",
-                            ImageUrl = "https://www.luxury-architecture.net/wp-content/uploads/2017/12/1513217889-7597-FAIRWAYS-010.jpg",
-                            IsActive = false,
-                            PricePerMonth = 2100.00m,
-                            RenterId = new Guid("8b08a6a0-2442-4f0a-a1b8-b70eb61af2bb"),
-                            Title = "Big House Marina",
-                            UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("10ffd4a5-1dfe-4ad3-accc-5fc08a1bb591"),
-                            Address = "Near the Sea Garden in Burgas, Bulgaria",
-                            AgentId = new Guid("1f233f72-8c64-4bf0-9b0f-6d58a0c9fa7e"),
-                            CategoryId = 2,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "It has the best comfort you will ever ask for. With two bedrooms, it is great for your family.",
-                            ImageUrl = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/179489660.jpg?k=2029f6d9589b49c95dcc9503a265e292c2cdfcb5277487a0050397c3f8dd545a&o=&hp=1",
-                            IsActive = false,
-                            PricePerMonth = 1200.00m,
-                            Title = "Family House Comfort",
-                            UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("4e872d36-bbff-4cc7-b8a7-5a4e66d6f1a5"),
-                            Address = "Boyana Neighbourhood, Sofia, Bulgaria",
-                            AgentId = new Guid("1f233f72-8c64-4bf0-9b0f-6d58a0c9fa7e"),
-                            CategoryId = 2,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "This luxurious house is everything you will need. It is just excellent.",
-                            ImageUrl = "https://i.pinimg.com/originals/a6/f5/85/a6f5850a77633c56e4e4ac4f867e3c00.jpg",
-                            IsActive = false,
-                            PricePerMonth = 2000.00m,
-                            Title = "Grand House",
-                            UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
