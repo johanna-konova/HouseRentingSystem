@@ -34,12 +34,12 @@ namespace HouseRentingSystem.Core.Models.House
         [Display(Name = "Image URL")]
         public string ImageUrl { get; set; } = string.Empty;
 
-        //[Required(ErrorMessage = RequiredMessage)]
+        [Required(ErrorMessage = RequiredMessage)]
         [Range(
             typeof(decimal),
             PricePerMonthMinValue,
             PricePerMonthMaxValue,
-            ErrorMessageResourceType = typeof(Resources.ValidationMessages), ErrorMessageResourceName = "InvalidNumberType")]
+            ErrorMessage = InvalidPriceRange)]
         [Display(Name = "Price per month")]
         public decimal PricePerMonth { get; set; }
 
