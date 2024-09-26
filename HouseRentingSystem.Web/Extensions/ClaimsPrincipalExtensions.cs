@@ -3,6 +3,10 @@
     public static class ClaimsPrincipalExtensions
     {
         public static Guid Id(this ClaimsPrincipal user)
-            => Guid.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        {
+            var idAsString = user.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            return idAsString == null ? Guid.Empty : Guid.Parse(idAsString);
+        }
     }
 }
