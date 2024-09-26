@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+using static HouseRentingSystem.Infrastructure.DataConstants.ApplicationUser;
 
 namespace HouseRentingSystem.Infrastructure.Models
 {
@@ -9,6 +11,12 @@ namespace HouseRentingSystem.Infrastructure.Models
             Id = Guid.NewGuid();
             RentedHouses = new HashSet<House>();
         }
+
+        [StringLength(FirstNameMaxLength)]
+        public string? FirstName { get; set; }
+
+        [StringLength(LastNameMaxLength)]
+        public string? LastName { get; set; }
 
         public IEnumerable<House> RentedHouses { get; init; }
     }
