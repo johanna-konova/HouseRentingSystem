@@ -1,4 +1,5 @@
-﻿using HouseRentingSystem.Core.Models.Houses;
+﻿using HouseRentingSystem.Core.Contracts;
+using HouseRentingSystem.Core.Models.Houses;
 using System.ComponentModel.DataAnnotations;
 
 using static HouseRentingSystem.Core.Constants.ModelsMessagesConstants;
@@ -6,7 +7,7 @@ using static HouseRentingSystem.Infrastructure.DataConstants.House;
 
 namespace HouseRentingSystem.Core.Models.House
 {
-	public class HouseFormModel
+	public class HouseFormModel : IHouseModel
     {
         [Required(ErrorMessage = RequiredMessage)]
         [StringLength(

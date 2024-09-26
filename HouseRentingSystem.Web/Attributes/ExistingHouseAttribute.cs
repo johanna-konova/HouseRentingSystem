@@ -7,6 +7,7 @@ using static HouseRentingSystem.Web.Attributes.Common.CommonFunctionalities;
 using static HouseRentingSystem.Core.Constants.MessageConstants;
 using static HouseRentingSystem.Core.Constants.MessageTypes;
 using HouseRentingSystem.Web.Controllers;
+using HouseRentingSystem.Core.Extensions;
 
 namespace HouseRentingSystem.Web.Attributes
 {
@@ -27,7 +28,10 @@ namespace HouseRentingSystem.Web.Attributes
                     return;
                 }
 
-                if (await houseService!.HasHouseWithGivenIdAsync(houseId))
+                var house = await houseService.GetDetailsAsync(houseId);
+                var informationValue = (string?)context.RouteData.Values["information"];
+
+                if (house != null && (informationValue == null || informationValue == house!.GetInformation()))
                 {
                     await next();
                     return;

@@ -1,6 +1,8 @@
-﻿namespace HouseRentingSystem.Core.Models.House
+﻿using HouseRentingSystem.Core.Contracts;
+
+namespace HouseRentingSystem.Core.Models.House
 {
-	public class HouseViewModel
+	public class HouseViewModel : IHouseModel
 	{
 		public Guid Id { get; init; }
 		public string Title { get; init; } = string.Empty;
