@@ -1,4 +1,13 @@
-﻿@model HouseViewModel
+﻿@inject IHouseService HouseService
+@inject IAgentService AgentService
+
+@model HouseViewModel
+
+@{
+    bool isAgentHouseCreator = await HouseService.IsAgentHouseCreatorAsync(Model.Id, User.Id());
+    bool isCurrentLoggedInUserAgent = await AgentService.IsAgentAsync(User.Id());
+    bool isCurrentLoggedInUserHouseRenter = await HouseService.IsRentedByUserWithGivenId(Model.Id, User.Id());
+}
 
 <div class="col-md-4">
     <div class="card mb-3">
@@ -14,21 +23,24 @@
             <br />
             <a asp-controller="House" asp-action="Details" asp-route-id="@Model.Id"
                class="btn btn-success">Details</a>
-            @if (this.User?.Identity?.IsAuthenticated ?? false)
+            @if (User?.Identity?.IsAuthenticated ?? false)
             {
-                <a asp-controller="House" asp-action="Edit" asp-route-id="@Model.Id"
-                   class="btn btn-warning">Edit</a>
-                <a asp-controller="House" asp-action="Delete" asp-route-id="@Model.Id"
-                   class="btn btn-danger">Delete</a>
-                <p></p>
-                @if (!Model.IsRented)
+                @if (isAgentHouseCreator)
+                {
+                    <a asp-controller="House" asp-action="Edit" asp-route-id="@Model.Id"
+                       class="btn btn-warning">Edit</a>
+                    <a asp-controller="House" asp-action="Delete" asp-route-id="@Model.Id"
+                       class="btn btn-danger">Delete</a>
+                    <p></p>
+                }
+                @if (Model.IsRented == false && isCurrentLoggedInUserAgent == false)
                 {
                     <form class="input-group-sm" asp-controller="House"
                           asp-action="Rent" asp-route-id="@Model.Id" method="post">
                         <input class="btn btn-primary" type="submit" value="Rent" />
                     </form>
                 }
-                else
+                else if (isCurrentLoggedInUserHouseRenter)
                 {
                     <form asp-controller="House" asp-action="Leave"
                           asp-route-id="@Model.Id" method="post">

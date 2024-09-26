@@ -1,8 +1,12 @@
-﻿@model IEnumerable<IndexViewModel>
+﻿@inject IAgentService AgentService
+
+@model IEnumerable<IndexViewModel>
 
 @{
     ViewData["Title"] = "Home Page";
+
     var houses = Model.ToList();
+    bool isCurrentLoggedInUserAgent = await AgentService.IsAgentAsync(User.Id());
 }
 
 @if (!houses.Any())
@@ -15,7 +19,7 @@
         </p>
         <hr class="my-4">
         <p class="lead">
-            @if (User?.Identity?.IsAuthenticated ?? false)
+            @if (isCurrentLoggedInUserAgent)
             {
                 <a asp-controller="House" asp-action="Add" class="btn btn-primary btn-lg"
                    role="button">Add House</a>

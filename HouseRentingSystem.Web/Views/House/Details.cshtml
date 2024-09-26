@@ -1,7 +1,14 @@
-﻿@model HouseDetailsViewModel
+﻿@inject IHouseService HouseService
+@inject IAgentService AgentService
+
+@model HouseDetailsViewModel
 
 @{
     ViewBag.Title = "House Details";
+
+    bool isAgentHouseCreator = await HouseService.IsAgentHouseCreatorAsync(Model.Id, User.Id());
+    bool isCurrentLoggedInUserAgent = await AgentService.IsAgentAsync(User.Id());
+    bool isCurrentLoggedInUserHouseRenter = await HouseService.IsRentedByUserWithGivenId(Model.Id, User.Id());
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
@@ -24,20 +31,23 @@
             <p>Category: <b>@Model.Category</b></p>
             <p><i>(@(Model.IsRented ? "Rented" : "Not Rented"))</i></p>
             <div class="form-inline">
-                @if (this.User?.Identity?.IsAuthenticated ?? false)
+                @if (User?.Identity?.IsAuthenticated ?? false)
                 {
-                    <a class="btn btn-warning" asp-controller="House" asp-action="Edit"
-                       asp-route-id="@Model.Id">Edit</a>
-                    <a class="ml-2 btn btn-danger" asp-controller="House" asp-action="Delete"
-                       asp-route-id="@Model.Id">Delete</a>
-                    @if (!Model.IsRented)
+                    @if (isAgentHouseCreator)
+                    {
+                        <a class="btn btn-warning" asp-controller="House" asp-action="Edit"
+                           asp-route-id="@Model.Id">Edit</a>
+                        <a class="ml-2 btn btn-danger" asp-controller="House" asp-action="Delete"
+                           asp-route-id="@Model.Id">Delete</a>
+                    }
+                    @if (Model.IsRented == false && isCurrentLoggedInUserAgent == false)
                     {
                         <form class="ml-2" asp-controller="House"
                               asp-action="Rent" asp-route-id="@Model.Id" method="post">
                             <input class="btn btn-primary" type="submit" value="Rent" />
                         </form>
                     }
-                    else
+                    else if (isCurrentLoggedInUserHouseRenter)
                     {
                         <form class="ml-2" asp-controller="House" asp-action="Leave"
                               asp-route-id="@Model.Id" method="post">
@@ -50,7 +60,7 @@
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">Agent Info</h5>
-                    <p class="card-text">Email:  @Model.Agent.Email</p>
+                    <p class="card-text">Email: @Model.Agent.Email</p>
                     <p class="card-text">Phone Number: @Model.Agent.PhoneNumber</p>
                 </div>
             </div>
