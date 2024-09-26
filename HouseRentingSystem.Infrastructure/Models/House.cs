@@ -11,6 +11,8 @@ namespace HouseRentingSystem.Infrastructure.Models
         public House()
         {
             Id = Guid.NewGuid();
+            CreatedOn = DateTime.Now;
+            UpdatedOn = DateTime.Now;
             IsActive = true;
         }
 
@@ -54,6 +56,6 @@ namespace HouseRentingSystem.Infrastructure.Models
 
         public Guid? RenterId { get; set; }
 
-        public ApplicationUser Renter { get; set; }
+        public ApplicationUser? Renter { get; set; }
     }
 }

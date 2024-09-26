@@ -1,4 +1,5 @@
-﻿using HouseRentingSystem.Infrastructure.Configurations;
+﻿using HouseRentingSystem.Infrastructure.Configuration;
+using HouseRentingSystem.Infrastructure.Configurations;
 using HouseRentingSystem.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -20,6 +21,8 @@ namespace HouseRentingSystem.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new ApplicationUsersConfigurations());
+            builder.ApplyConfiguration(new AgentsConfiguration());
             builder.ApplyConfiguration(new CategoriesConfiguration());
             builder.ApplyConfiguration(new HousesConfiguration());
 
