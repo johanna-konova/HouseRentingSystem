@@ -1,6 +1,5 @@
 ﻿using HouseRentingSystem.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 using static HouseRentingSystem.Infrastructure.Constants.SeedDataConstants;
 using static HouseRentingSystem.Web.Common.CommonHelpers;
 
@@ -18,18 +17,10 @@ namespace Microsoft.AspNetCore.Builder
             var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 
             var agentUser = await userManager.FindByEmailAsync(AgentUserEmail);
-            await AddUserClaim(
-                userManager,
-                agentUser,
-                AgentUserFirstName,
-                AgentUserLastName);
+            await AddUserClaim(userManager, agentUser, null);
 
             var guestUser = await userManager.FindByEmailAsync(GuestUserEmail);
-            await AddUserClaim(
-                userManager,
-                guestUser,
-                GuestFirstName,
-                GuestLastName);
+            await AddUserClaim(userManager, guestUser, null);
 
             return app;
         }

@@ -43,7 +43,11 @@ namespace HouseRentingSystem.Web.Controllers
                 return View(model);
             }
 
-            var user = new ApplicationUser();
+            var user = new ApplicationUser()
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+            };
 
             await userManager.SetEmailAsync(user, model.Email);
             await userManager.SetUserNameAsync(user, model.Email);
@@ -60,14 +64,9 @@ namespace HouseRentingSystem.Web.Controllers
                 return View(model);
             }
 
-            await AddUserClaim(
-                userManager,
-                user,
-                model.FirstName,
-                model.LastName);
-
             await signInManager.SignInAsync(user, false);
-            
+            await AddUserClaim(userManager, user, signInManager);
+
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
@@ -107,7 +106,7 @@ namespace HouseRentingSystem.Web.Controllers
 
                 if (result.Succeeded)
                 {
-                    //await userManager.cl(user, new Claim("fullName", $"{user.FirstName} {user.LastName}"));
+                    await AddUserClaim(userManager, user, signInManager);
                     return Redirect(model.ReturnUrl ?? Url.Content("/"));
                 }
             }

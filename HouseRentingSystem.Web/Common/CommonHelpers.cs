@@ -9,18 +9,25 @@ namespace HouseRentingSystem.Web.Common
         public static async Task AddUserClaim(
             UserManager<ApplicationUser> userManager,
             ApplicationUser? user,
-            string userFirstName,
-            string userLastName)
+            SignInManager<ApplicationUser>? signInManager)
         {
             if (user != null)
             {
                 var userClaims = await userManager.GetClaimsAsync(user);
 
-                var fullNameClaim = userClaims.FirstOrDefault(c => c.Type == "customClaims/fullname");
+                string fullNameClaimType = "customClaims/fullname";
+
+                var fullNameClaim = userClaims.FirstOrDefault(c => c.Type == fullNameClaimType);
 
                 if (fullNameClaim == null)
                 {
-                    await userManager.AddClaimAsync(user, new Claim("customClaims/fullname", $"{userFirstName} {userLastName}"));
+                    string fullNameClaimValue = $"{user.FirstName} {user.LastName}";
+                    await userManager.AddClaimAsync(user, new Claim(fullNameClaimType, fullNameClaimValue));
+
+                    if (signInManager != null)
+                    {
+                        await signInManager.RefreshSignInAsync(user);
+                    }
                 }
             }
         }
