@@ -9,6 +9,7 @@
     bool isAgentHouseCreator = await HouseService.IsAgentHouseCreatorAsync(Model.Id, User.Id());
     bool isCurrentLoggedInUserAgent = await AgentService.IsAgentAsync(User.Id());
     bool isCurrentLoggedInUserHouseRenter = await HouseService.IsRentedByUserWithGivenId(Model.Id, User.Id());
+    string agentFullName = Model.Agent.FullName;
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
@@ -60,6 +61,10 @@
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">Agent Info</h5>
+                    @if (agentFullName.Split(" ", StringSplitOptions.RemoveEmptyEntries).Length >= 2)
+                    {
+                        <p class="card-text">Full Name: @agentFullName</p>
+                    }
                     <p class="card-text">Email: @Model.Agent.Email</p>
                     <p class="card-text">Phone Number: @Model.Agent.PhoneNumber</p>
                 </div>

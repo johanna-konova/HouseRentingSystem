@@ -144,6 +144,7 @@ namespace HouseRentingSystem.Core.Services
                     IsRented = h.RenterId != null,
                     Agent = new HouseAgentInfoModel ()
                     {
+                        FullName = $"{h.Agent.User.FirstName} {h.Agent.User.LastName}",
                         Email = h.Agent.User.Email!,
                         PhoneNumber = h.Agent.PhoneNumber,
                     },
