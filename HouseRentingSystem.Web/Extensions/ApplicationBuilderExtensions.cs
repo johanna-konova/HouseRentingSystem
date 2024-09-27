@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using static HouseRentingSystem.Infrastructure.Constants.SeedDataConstants;
+using static HouseRentingSystem.Web.Common.CommonHelpers;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -65,25 +66,6 @@ namespace Microsoft.AspNetCore.Builder
                 .GetResult();
 
             return app;
-        }
-
-        private static async Task AddUserClaim(
-            UserManager<ApplicationUser> userManager,
-            ApplicationUser? user,
-            string userFirstName,
-            string userLastName)
-        {
-            if (user != null)
-            {
-                var userClaims = await userManager.GetClaimsAsync(user);
-
-                var fullNameClaim = userClaims.FirstOrDefault(c => c.Type == "customClaims/fullname");
-
-                if (fullNameClaim == null)
-                {
-                    await userManager.AddClaimAsync(user, new Claim("customClaims/fullname", $"{userFirstName} {userLastName}"));
-                }
-            }
         }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using static HouseRentingSystem.Core.Constants.MessageConstants;
+using static HouseRentingSystem.Web.Common.CommonHelpers;
 
 namespace HouseRentingSystem.Web.Controllers
 {
@@ -45,7 +46,7 @@ namespace HouseRentingSystem.Web.Controllers
             var user = new ApplicationUser();
 
             await userManager.SetEmailAsync(user, model.Email);
-            await userManager.SetUserNameAsync(user, model.FirstName);
+            await userManager.SetUserNameAsync(user, model.Email);
 
             var result = await userManager.CreateAsync(user, model.Password);
 
@@ -58,6 +59,12 @@ namespace HouseRentingSystem.Web.Controllers
 
                 return View(model);
             }
+
+            await AddUserClaim(
+                userManager,
+                user,
+                model.FirstName,
+                model.LastName);
 
             await signInManager.SignInAsync(user, false);
             
