@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HouseRentingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(HouseRentingDbContext))]
-    [Migration("20240926134535_InitializeDatabase")]
-    partial class InitializeDatabase
+    [Migration("20240927141921_AddFirstNameAndLastNameColumnsToUsersTable")]
+    partial class AddFirstNameAndLastNameColumnsToUsersTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,6 +65,14 @@ namespace HouseRentingSystem.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");

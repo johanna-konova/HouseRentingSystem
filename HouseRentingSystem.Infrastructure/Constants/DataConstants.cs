@@ -2,6 +2,15 @@
 {
     public static class DataConstants
     {
+        public static class ApplicationUser
+        {
+            public const int FirstNameMinLength = 1;
+            public const int FirstNameMaxLength = 12;
+
+            public const int LastNameMinLength = 3;
+            public const int LastNameMaxLength = 15;
+        }
+
         public static class Category
         {
             public const int NameMaxLength = 50;
@@ -20,13 +29,13 @@
 
             public const int ImageUrlMaxLength = 2048;
 
-            public const string PricePerMonthMinValue = "0.00";
-            public const string PricePerMonthMaxValue = "2000.00";
+            public const string PricePerMonthMinValue = "0";
+            public const string PricePerMonthMaxValue = "2000";
         }
 
         public static class Agent
         {
-            public const int PhoneNumberMinLength = 8;
+            public const int PhoneNumberMinLength = 7;
             public const int PhoneNumberMaxLength = 15;
         }
     }

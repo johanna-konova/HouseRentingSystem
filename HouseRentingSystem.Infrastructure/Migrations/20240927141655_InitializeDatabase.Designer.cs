@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HouseRentingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(HouseRentingDbContext))]
-    [Migration("20240927094527_SeedDatabeseWithInitialData")]
-    partial class SeedDatabeseWithInitialData
+    [Migration("20240927141655_InitializeDatabase")]
+    partial class InitializeDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,14 +44,6 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Agents");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("bae99276-1865-4c63-899c-093d3b85f014"),
-                            PhoneNumber = "+359888888888",
-                            UserId = new Guid("a1b2c3d4-e5f6-7890-ab12-c3de4f567890")
-                        });
                 });
 
             modelBuilder.Entity("HouseRentingSystem.Infrastructure.Models.ApplicationUser", b =>
@@ -118,40 +110,6 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("a1b2c3d4-e5f6-7890-ab12-c3de4f567890"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "7f3fbb67-83a1-4c8a-9376-77d5bc93e96e",
-                            Email = "agent@mail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = true,
-                            NormalizedEmail = "AGENT@MAIL.COM",
-                            NormalizedUserName = "AGENT@MAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKjDjqUH51uTY8k7iLuAcColpSmc1PxNjA8oGx42v+nByM7e9XZulWB8Fx3HRcZ5jA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "XKYK5BIDWLG3ED57QZYQHRLUZMMUVYWS",
-                            TwoFactorEnabled = false,
-                            UserName = "agent@mail.com"
-                        },
-                        new
-                        {
-                            Id = new Guid("f7e8d9a0-b1c2-34d5-6789-f01ab2c345de"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "5d4fdb87-23b1-4da2-9e3e-a8b4df7a283f",
-                            Email = "guest@mail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = true,
-                            NormalizedEmail = "GUEST@MAIL.COM",
-                            NormalizedUserName = "GUEST@MAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAELADBec/SeLAZhzeQGsyBVo6H/kXkyUvtjLoq0vypdAyuIgr9KwKZAbkpUyPcAkPAg==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "JTHY3GADWFA4KD67TFYUIUQNLJMNXYAS",
-                            TwoFactorEnabled = false,
-                            UserName = "guest@mail.com"
-                        });
                 });
 
             modelBuilder.Entity("HouseRentingSystem.Infrastructure.Models.Category", b =>
@@ -170,23 +128,6 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Cottage"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Single-Family"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Duplex"
-                        });
                 });
 
             modelBuilder.Entity("HouseRentingSystem.Infrastructure.Models.House", b =>
@@ -246,51 +187,6 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                     b.HasIndex("RenterId");
 
                     b.ToTable("Houses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("400f1c4b-5dc5-447b-9b2d-c80475b282e6"),
-                            Address = "North London, UK (near the border)",
-                            AgentId = new Guid("bae99276-1865-4c63-899c-093d3b85f014"),
-                            CategoryId = 3,
-                            CreatedOn = new DateTime(2024, 9, 27, 12, 45, 25, 7, DateTimeKind.Local).AddTicks(3252),
-                            Description = "A big house for your whole family. Don't miss to buy a house with three bedrooms.",
-                            ImageUrl = "https://www.luxury-architecture.net/wp-content/uploads/2017/12/1513217889-7597-FAIRWAYS-010.jpg",
-                            IsActive = true,
-                            PricePerMonth = 2100.00m,
-                            RenterId = new Guid("f7e8d9a0-b1c2-34d5-6789-f01ab2c345de"),
-                            Title = "Big House Marina",
-                            UpdatedOn = new DateTime(2024, 9, 27, 12, 45, 25, 7, DateTimeKind.Local).AddTicks(3368)
-                        },
-                        new
-                        {
-                            Id = new Guid("d6db6215-63a9-4946-af9a-3084a11b3171"),
-                            Address = "Near the Sea Garden in Burgas, Bulgaria",
-                            AgentId = new Guid("bae99276-1865-4c63-899c-093d3b85f014"),
-                            CategoryId = 2,
-                            CreatedOn = new DateTime(2024, 9, 27, 12, 45, 25, 7, DateTimeKind.Local).AddTicks(3536),
-                            Description = "It has the best comfort you will ever ask for. With two bedrooms, it is great for your family.",
-                            ImageUrl = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/179489660.jpg?k=2029f6d9589b49c95dcc9503a265e292c2cdfcb5277487a0050397c3f8dd545a&o=&hp=1",
-                            IsActive = true,
-                            PricePerMonth = 1200.00m,
-                            Title = "Family House Comfort",
-                            UpdatedOn = new DateTime(2024, 9, 27, 12, 45, 25, 7, DateTimeKind.Local).AddTicks(3542)
-                        },
-                        new
-                        {
-                            Id = new Guid("3d709f23-2cd8-4e8d-a296-cf67807c0cde"),
-                            Address = "Boyana Neighbourhood, Sofia, Bulgaria",
-                            AgentId = new Guid("bae99276-1865-4c63-899c-093d3b85f014"),
-                            CategoryId = 2,
-                            CreatedOn = new DateTime(2024, 9, 27, 12, 45, 25, 7, DateTimeKind.Local).AddTicks(3583),
-                            Description = "This luxurious house is everything you will need. It is just excellent.",
-                            ImageUrl = "https://i.pinimg.com/originals/a6/f5/85/a6f5850a77633c56e4e4ac4f867e3c00.jpg",
-                            IsActive = true,
-                            PricePerMonth = 2000.00m,
-                            Title = "Grand House",
-                            UpdatedOn = new DateTime(2024, 9, 27, 12, 45, 25, 7, DateTimeKind.Local).AddTicks(3601)
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
