@@ -1,6 +1,7 @@
 ﻿using HouseRentingSystem.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using static HouseRentingSystem.Infrastructure.Constants.SeedDataConstants;
 
 namespace HouseRentingSystem.Infrastructure.Configuration
 {
@@ -17,9 +18,9 @@ namespace HouseRentingSystem.Infrastructure.Configuration
 
             Agent agent = new Agent()
             {
-                Id = Guid.Parse("bae99276-1865-4c63-899c-093d3b85f014"),
+                Id = Guid.Parse(AgentId),
                 PhoneNumber = "+359888888888",
-                UserId = Guid.Parse("a1b2c3d4-e5f6-7890-ab12-c3de4f567890"),
+                UserId = Guid.Parse(AgentUserId),
 
             };
             agents.Add(agent);

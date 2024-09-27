@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-using static HouseRentingSystem.Infrastructure.DataConstants.Agent;
+using static HouseRentingSystem.Infrastructure.Constants.DataConstants.Agent;
 
 namespace HouseRentingSystem.Infrastructure.Models
 {

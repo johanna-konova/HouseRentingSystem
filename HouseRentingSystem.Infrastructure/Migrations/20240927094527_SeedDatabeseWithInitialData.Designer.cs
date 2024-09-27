@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HouseRentingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(HouseRentingDbContext))]
-    [Migration("20240926141313_SeedDatabeseWithInitialData")]
+    [Migration("20240927094527_SeedDatabeseWithInitialData")]
     partial class SeedDatabeseWithInitialData
     {
         /// <inheritdoc />
@@ -130,7 +130,7 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                             LockoutEnabled = true,
                             NormalizedEmail = "AGENT@MAIL.COM",
                             NormalizedUserName = "AGENT@MAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHbP8eVfaxfCTSSF0IIX0t4mogK9k0ROxqwIdfR5AeLFoIm3nwSrRrVH1WKAnQ8b+A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKjDjqUH51uTY8k7iLuAcColpSmc1PxNjA8oGx42v+nByM7e9XZulWB8Fx3HRcZ5jA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "XKYK5BIDWLG3ED57QZYQHRLUZMMUVYWS",
                             TwoFactorEnabled = false,
@@ -146,7 +146,7 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                             LockoutEnabled = true,
                             NormalizedEmail = "GUEST@MAIL.COM",
                             NormalizedUserName = "GUEST@MAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJFPnOD8vSvNRc3QXa51npQD1l3TXXKIpBZXYU3J+YZIEvMM4Uyy0MUlfBAt9ZWI/Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELADBec/SeLAZhzeQGsyBVo6H/kXkyUvtjLoq0vypdAyuIgr9KwKZAbkpUyPcAkPAg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "JTHY3GADWFA4KD67TFYUIUQNLJMNXYAS",
                             TwoFactorEnabled = false,
@@ -250,46 +250,46 @@ namespace HouseRentingSystem.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fc905073-5b8d-4d39-9724-9c58552864b1"),
+                            Id = new Guid("400f1c4b-5dc5-447b-9b2d-c80475b282e6"),
                             Address = "North London, UK (near the border)",
                             AgentId = new Guid("bae99276-1865-4c63-899c-093d3b85f014"),
                             CategoryId = 3,
-                            CreatedOn = new DateTime(2024, 9, 26, 17, 13, 13, 521, DateTimeKind.Local).AddTicks(9491),
+                            CreatedOn = new DateTime(2024, 9, 27, 12, 45, 25, 7, DateTimeKind.Local).AddTicks(3252),
                             Description = "A big house for your whole family. Don't miss to buy a house with three bedrooms.",
                             ImageUrl = "https://www.luxury-architecture.net/wp-content/uploads/2017/12/1513217889-7597-FAIRWAYS-010.jpg",
                             IsActive = true,
                             PricePerMonth = 2100.00m,
                             RenterId = new Guid("f7e8d9a0-b1c2-34d5-6789-f01ab2c345de"),
                             Title = "Big House Marina",
-                            UpdatedOn = new DateTime(2024, 9, 26, 17, 13, 13, 521, DateTimeKind.Local).AddTicks(9563)
+                            UpdatedOn = new DateTime(2024, 9, 27, 12, 45, 25, 7, DateTimeKind.Local).AddTicks(3368)
                         },
                         new
                         {
-                            Id = new Guid("b4459c52-1ecb-4a69-bb0d-e5c03c7e75e3"),
+                            Id = new Guid("d6db6215-63a9-4946-af9a-3084a11b3171"),
                             Address = "Near the Sea Garden in Burgas, Bulgaria",
                             AgentId = new Guid("bae99276-1865-4c63-899c-093d3b85f014"),
                             CategoryId = 2,
-                            CreatedOn = new DateTime(2024, 9, 26, 17, 13, 13, 521, DateTimeKind.Local).AddTicks(9591),
+                            CreatedOn = new DateTime(2024, 9, 27, 12, 45, 25, 7, DateTimeKind.Local).AddTicks(3536),
                             Description = "It has the best comfort you will ever ask for. With two bedrooms, it is great for your family.",
                             ImageUrl = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/179489660.jpg?k=2029f6d9589b49c95dcc9503a265e292c2cdfcb5277487a0050397c3f8dd545a&o=&hp=1",
                             IsActive = true,
                             PricePerMonth = 1200.00m,
                             Title = "Family House Comfort",
-                            UpdatedOn = new DateTime(2024, 9, 26, 17, 13, 13, 521, DateTimeKind.Local).AddTicks(9593)
+                            UpdatedOn = new DateTime(2024, 9, 27, 12, 45, 25, 7, DateTimeKind.Local).AddTicks(3542)
                         },
                         new
                         {
-                            Id = new Guid("171c4809-7e29-425c-a2b0-0bdf64164fd1"),
+                            Id = new Guid("3d709f23-2cd8-4e8d-a296-cf67807c0cde"),
                             Address = "Boyana Neighbourhood, Sofia, Bulgaria",
                             AgentId = new Guid("bae99276-1865-4c63-899c-093d3b85f014"),
                             CategoryId = 2,
-                            CreatedOn = new DateTime(2024, 9, 26, 17, 13, 13, 521, DateTimeKind.Local).AddTicks(9598),
+                            CreatedOn = new DateTime(2024, 9, 27, 12, 45, 25, 7, DateTimeKind.Local).AddTicks(3583),
                             Description = "This luxurious house is everything you will need. It is just excellent.",
                             ImageUrl = "https://i.pinimg.com/originals/a6/f5/85/a6f5850a77633c56e4e4ac4f867e3c00.jpg",
                             IsActive = true,
                             PricePerMonth = 2000.00m,
                             Title = "Grand House",
-                            UpdatedOn = new DateTime(2024, 9, 26, 17, 13, 13, 521, DateTimeKind.Local).AddTicks(9604)
+                            UpdatedOn = new DateTime(2024, 9, 27, 12, 45, 25, 7, DateTimeKind.Local).AddTicks(3601)
                         });
                 });
 

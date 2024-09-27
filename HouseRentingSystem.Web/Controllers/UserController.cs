@@ -3,10 +3,8 @@ using HouseRentingSystem.Infrastructure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 using static HouseRentingSystem.Core.Constants.MessageConstants;
-using static HouseRentingSystem.Core.Constants.MessageTypes;
 
 namespace HouseRentingSystem.Web.Controllers
 {
@@ -44,11 +42,7 @@ namespace HouseRentingSystem.Web.Controllers
                 return View(model);
             }
 
-            var user = new ApplicationUser()
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-            };
+            var user = new ApplicationUser();
 
             await userManager.SetEmailAsync(user, model.Email);
             await userManager.SetUserNameAsync(user, model.FirstName);
@@ -106,6 +100,7 @@ namespace HouseRentingSystem.Web.Controllers
 
                 if (result.Succeeded)
                 {
+                    //await userManager.cl(user, new Claim("fullName", $"{user.FirstName} {user.LastName}"));
                     return Redirect(model.ReturnUrl ?? Url.Content("/"));
                 }
             }
