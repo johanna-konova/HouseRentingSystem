@@ -43,4 +43,6 @@ app.MapControllerRoute(
 app.MapDefaultControllerRoute();
 app.MapRazorPages();
 
+await app.SeedUsersClaim();
+
 await app.RunAsync();
