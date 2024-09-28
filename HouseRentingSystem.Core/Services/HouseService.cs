@@ -1,4 +1,6 @@
-﻿using HouseRentingSystem.Core.Contracts;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using HouseRentingSystem.Core.Contracts;
 using HouseRentingSystem.Core.Models.Home;
 using HouseRentingSystem.Core.Models.House;
 using HouseRentingSystem.Core.Models.House.Enums;
@@ -13,13 +15,16 @@ namespace HouseRentingSystem.Core.Services
     {
         private readonly IRepository repository;
         private readonly ICategoryService categoryService;
+        private readonly IMapper mapper;
 
         public HouseService(
             IRepository _repository,
-            ICategoryService _categoryService)
+            ICategoryService _categoryService,
+            IMapper _mapper)
         {
             repository = _repository;
             categoryService = _categoryService;
+            mapper = _mapper;
         }
 
         public async Task<IEnumerable<IndexViewModel>> GetLastThreeAsync()
@@ -28,27 +33,21 @@ namespace HouseRentingSystem.Core.Services
                 .Where(h => h.IsActive)
                 .OrderByDescending(h => h.CreatedOn)
                 .Take(3)
-                .Select(h => new IndexViewModel()
-                {
-                    Id = h.Id,
-                    Title = h.Title,
-                    Address = h.Address,
-                    ImageUrl = h.ImageUrl,
-                })
+                .ProjectTo<IndexViewModel>(mapper.ConfigurationProvider)
                 .ToListAsync();
 
         public async Task<IEnumerable<HouseViewModel>> GetManagedByAgentIdAsync(Guid agentId)
             => await repository
                 .AllAsNoTracking<House>()
                 .Where(h => h.AgentId == agentId && h.IsActive)
-                .ProjectToHouseViewModel()
+                .ProjectTo<HouseViewModel>(mapper.ConfigurationProvider)
                 .ToListAsync();
 
         public async Task<IEnumerable<HouseViewModel>> GetRentedByUserIdAsync(Guid userId)
             => await repository
                 .AllAsNoTracking<House>()
                 .Where(h => h.RenterId == userId && h.IsActive)
-                .ProjectToHouseViewModel()
+                .ProjectTo<HouseViewModel>(mapper.ConfigurationProvider)
                 .ToListAsync();
 
         public async Task<AllHousesQueryModel> GetAllAsync(AllHousesQueryModel model)
@@ -86,15 +85,7 @@ namespace HouseRentingSystem.Core.Services
             var houses = await housesQuery
                 .Skip((model.CurrentPage - 1) * model.HousesPerPage)
                 .Take(model.HousesPerPage)
-                .Select(h => new HouseViewModel()
-                {
-                    Id = h.Id,
-                    Title = h.Title,
-                    Address = h.Address,
-                    ImageUrl = h.ImageUrl,
-                    PricePerMonth = h.PricePerMonth,
-                    IsRented = h.RenterId != null,
-                })
+                .ProjectTo<HouseViewModel>(mapper.ConfigurationProvider)
                 .ToListAsync();
 
             model.TotalHousesCount = housesQuery.Count();
@@ -109,15 +100,7 @@ namespace HouseRentingSystem.Core.Services
             var house = await repository
                 .AllAsNoTracking<House>()
                 .Where(h => h.Id == id)
-                .Select(h => new HouseFormModel()
-                {
-                    Title = h.Title,
-                    Address = h.Address,
-                    Description = h.Description,
-                    ImageUrl = h.ImageUrl,
-                    PricePerMonth = h.PricePerMonth,
-                    CategoryId = h.CategoryId,
-                })
+                .ProjectTo<HouseFormModel>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
 
             if (house != null)
@@ -132,36 +115,14 @@ namespace HouseRentingSystem.Core.Services
             => await repository
                 .AllAsNoTracking<House>()
                 .Where(h => h.Id == id)
-                .Select(h => new HouseDetailsViewModel()
-                {
-                    Id = h.Id,
-                    Title = h.Title,
-                    Address = h.Address,
-                    Description = h.Description,
-                    ImageUrl = h.ImageUrl,
-                    PricePerMonth = h.PricePerMonth,
-                    Category = h.Category.Name,
-                    IsRented = h.RenterId != null,
-                    Agent = new HouseAgentInfoModel ()
-                    {
-                        FullName = $"{h.Agent.User.FirstName} {h.Agent.User.LastName}",
-                        Email = h.Agent.User.Email!,
-                        PhoneNumber = h.Agent.PhoneNumber,
-                    },
-                })
+                .ProjectTo<HouseDetailsViewModel>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
 
         public async Task<HouseDeleteViewModel?> GetDetailsForDeleteFormAsync(Guid id)
             => await repository
                 .AllAsNoTracking<House>()
                 .Where(h => h.Id == id)
-                .Select(h => new HouseDeleteViewModel()
-                {
-                    Id = h.Id,
-                    Title = h.Title,
-                    Address = h.Address,
-                    ImageUrl = h.ImageUrl,
-                })
+                .ProjectTo<HouseDeleteViewModel>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
 
         public async Task<int> GetHouseCategoryIdAsync(Guid houseId)
