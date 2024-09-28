@@ -64,6 +64,29 @@ namespace HouseRentingSystem.Infrastructure.Configuration
             user.PasswordHash = hasher.HashPassword(user, "guest123");
             users.Add(user);
 
+            user = new ApplicationUser()
+            {
+                Id = Guid.Parse(AdminUserId),
+                UserName = AdminUserEmail,
+                NormalizedUserName = AdminUserEmail.ToUpper(),
+                Email = AdminUserEmail,
+                NormalizedEmail = AdminUserEmail.ToUpper(),
+                FirstName = "Great",
+                LastName = "Admin",
+                EmailConfirmed = true,
+                SecurityStamp = "7EFH3KADWFA4KD67TFYUIUQNLKJHYPLS",
+                ConcurrencyStamp = "a2e5bc24-9e10-4e5e-90b3-94a5c8f4a1c6",
+                PhoneNumber = null,
+                PhoneNumberConfirmed = false,
+                TwoFactorEnabled = false,
+                LockoutEnd = null,
+                LockoutEnabled = true,
+                AccessFailedCount = 0
+            };
+
+            user.PasswordHash = hasher.HashPassword(user, "admin123");
+            users.Add(user);
+
             return users;
         }
     }

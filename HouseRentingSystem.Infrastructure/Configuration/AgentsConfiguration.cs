@@ -25,6 +25,15 @@ namespace HouseRentingSystem.Infrastructure.Configuration
             };
             agents.Add(agent);
 
+            agent = new Agent()
+            {
+                Id = Guid.Parse("d038a75f-fcb7-475c-b36c-ab312ef170be"),
+                PhoneNumber = "+359123456789",
+                UserId = Guid.Parse(AdminUserId),
+
+            };
+            agents.Add(agent);
+
             return agents;
         }
     }
