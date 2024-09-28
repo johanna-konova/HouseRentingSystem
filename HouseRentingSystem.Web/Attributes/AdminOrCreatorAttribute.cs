@@ -10,7 +10,7 @@ using HouseRentingSystem.Web.Controllers;
 
 namespace HouseRentingSystem.Web.Attributes
 {
-    public class CreatorAttribute : ActionFilterAttribute
+    public class AdminOrCreatorAttribute : ActionFilterAttribute
     {
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
@@ -28,7 +28,8 @@ namespace HouseRentingSystem.Web.Attributes
 
                 var userId = context.HttpContext.User.Id();
 
-                if (await houseService!.IsAgentHouseCreatorAsync(houseId, userId))
+                if (await houseService!.IsAgentHouseCreatorAsync(houseId, userId)
+                    || context.HttpContext.User.IsAdmin())
                 {
                     await next();
                     return;

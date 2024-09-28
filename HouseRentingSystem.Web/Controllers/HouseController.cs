@@ -91,7 +91,7 @@ namespace HouseRentingSystem.Web.Controllers
         }
 
         [ExistingHouse]
-        [Creator]
+        [AdminOrCreator]
         public async Task<IActionResult> Edit(string id)
         {
             var houseToEdit = await houseService.AssembleHouseFormModelAsync(Guid.Parse(id));
@@ -100,7 +100,7 @@ namespace HouseRentingSystem.Web.Controllers
         }
 
         [ExistingHouse]
-        [Creator]
+        [AdminOrCreator]
         [HttpPost]
         public async Task<IActionResult> Edit(string id, HouseFormModel model)
         {
@@ -121,7 +121,7 @@ namespace HouseRentingSystem.Web.Controllers
         }
 
         [ExistingHouse]
-        [Creator]
+        [AdminOrCreator]
         public async Task<IActionResult> Delete(string id)
         {
             var houseToDelete = await houseService.GetDetailsForDeleteFormAsync(Guid.Parse(id));
@@ -130,7 +130,7 @@ namespace HouseRentingSystem.Web.Controllers
         }
 
         [ExistingHouse]
-        [Creator]
+        [AdminOrCreator]
         [HttpPost]
         public async Task<IActionResult> Delete(HouseDeleteViewModel model)
         {

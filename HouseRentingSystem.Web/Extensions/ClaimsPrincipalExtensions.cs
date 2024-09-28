@@ -1,4 +1,6 @@
-﻿namespace System.Security.Claims
+﻿using static HouseRentingSystem.Infrastructure.Constants.SeedDataConstants;
+
+namespace System.Security.Claims
 {
     public static class ClaimsPrincipalExtensions
     {
@@ -11,5 +13,8 @@
 
         public static string? FullName(this ClaimsPrincipal user)
             => user.FindFirstValue("customClaims/fullname");
+
+        public static bool IsAdmin(this ClaimsPrincipal user)
+            => user.IsInRole(AdminUserRoleName);
     }
 }

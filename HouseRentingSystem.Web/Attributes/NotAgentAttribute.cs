@@ -24,7 +24,8 @@ namespace HouseRentingSystem.Web.Attributes
 				return;
 			}
 
-			if (await agentService!.IsAgentAsync(context.HttpContext.User.Id()))
+			if (context.HttpContext.User.IsAdmin() == false
+                && await agentService!.IsAgentAsync(context.HttpContext.User.Id()))
 			{
 				string message;
 				string controllerName;
