@@ -15,5 +15,6 @@
 
         public const string AdminUserId = "bcb4f072-ecca-43c9-ab26-c060c6f364e4";
         public const string AdminUserEmail = "admin@mail.com";
+        public const string AdminUserRoleName = "Administrator";
     }
 }

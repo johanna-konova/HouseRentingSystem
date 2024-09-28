@@ -3,6 +3,7 @@ using HouseRentingSystem.Core.Services;
 using HouseRentingSystem.Infrastructure;
 using HouseRentingSystem.Infrastructure.Common;
 using HouseRentingSystem.Infrastructure.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -53,7 +54,8 @@ namespace Microsoft.Extensions.DependencyInjection
 					options.Password.RequireUppercase =
 						configuration.GetValue<bool>("Identity:Password:RequireUppercase");
 				})
-				.AddEntityFrameworkStores<HouseRentingDbContext>();
+				.AddRoles<IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<HouseRentingDbContext>();
 
 			return services;
 		}

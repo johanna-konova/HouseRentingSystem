@@ -25,7 +25,7 @@ namespace Microsoft.AspNetCore.Builder
             return app;
         }
 
-        public static IApplicationBuilder SeedAdmin(this IApplicationBuilder app)
+        public static async Task<IApplicationBuilder> SeedAdmin(this IApplicationBuilder app)
         {
             using var scopedServices = app.ApplicationServices.CreateScope();
 
@@ -34,27 +34,24 @@ namespace Microsoft.AspNetCore.Builder
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
             var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 
-            Task
-                .Run(async() =>
+            if (await roleManager.RoleExistsAsync(AdminUserRoleName) == false)
+            {
+                var role = new IdentityRole<Guid>()
                 {
-                    if (await roleManager.RoleExistsAsync("Administrator"))
-                    {
-                        return;
-                    }
+                    Name = AdminUserRoleName,
+                    NormalizedName = AdminUserRoleName.ToUpper(),
+                    ConcurrencyStamp = Guid.NewGuid().ToString(),
+                };
 
-                    var role = new IdentityRole<Guid>("Administrator");
+                await roleManager.CreateAsync(role);
 
-                    await roleManager.CreateAsync(role);
+                var admin = await userManager.FindByEmailAsync(AdminUserEmail);
 
-                    var admin = await userManager.FindByEmailAsync("admin@mail.com");
-
-                    if (admin != null)
-                    {
-                        await userManager.AddToRoleAsync(admin, role.Name);
-                    }
-                })
-                .GetAwaiter()
-                .GetResult();
+                if (admin != null)
+                {
+                    await userManager.AddToRoleAsync(admin, role.Name!);
+                }
+            }
 
             return app;
         }
