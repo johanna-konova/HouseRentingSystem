@@ -2,7 +2,7 @@
 using HouseRentingSystem.Core.Models.Statistics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HouseRentingSystem.WebAPI.Controllers
+namespace HouseRentingSystem.Web.Controllers.Api
 {
     [ApiController]
     [Route("api/statistic")]

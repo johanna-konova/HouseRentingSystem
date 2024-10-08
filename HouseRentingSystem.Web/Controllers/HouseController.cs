@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Security.Claims;
 
+using static HouseRentingSystem.Core.Constants.MessageConstants;
+using static HouseRentingSystem.Core.Constants.MessageTypes;
 using static HouseRentingSystem.Core.Constants.ModelsMessagesConstants;
 
 namespace HouseRentingSystem.Web.Controllers
@@ -96,6 +98,8 @@ namespace HouseRentingSystem.Web.Controllers
             var agentId = await agentService.GetAgentIdAsync(User.Id());
             var newHouseId = await houseService.CreateAsync(model, agentId.Value);
 
+            TempData[SuccessMessage] = AgentAddedHouse;
+
             return RedirectToAction(nameof(Details), new { id = newHouseId });
         }
 
@@ -126,6 +130,8 @@ namespace HouseRentingSystem.Web.Controllers
 
             await houseService.EditAsync(Guid.Parse(id), model);
 
+            TempData[SuccessMessage] = AgentEditedHouse;
+
             return RedirectToAction(nameof(Details), new { id });
         }
 
@@ -145,6 +151,8 @@ namespace HouseRentingSystem.Web.Controllers
         {
             await houseService.DeleteAsync(model.Id);
 
+            TempData[SuccessMessage] = AgentDeletedHouse;
+
             return RedirectToAction(nameof(All));
         }
 
@@ -158,6 +166,8 @@ namespace HouseRentingSystem.Web.Controllers
 
             cache.Remove("RentsCacheKey");
 
+            TempData[SuccessMessage] = UserRentedHouse;
+
             return RedirectToAction(nameof(Mine));
         }
 
@@ -169,6 +179,8 @@ namespace HouseRentingSystem.Web.Controllers
             await houseService.LeaveAsync(Guid.Parse(id));
 
             cache.Remove("RentsCacheKey");
+
+            TempData[SuccessMessage] = UserLeftHouse;
 
             return RedirectToAction(nameof(Mine));
         }

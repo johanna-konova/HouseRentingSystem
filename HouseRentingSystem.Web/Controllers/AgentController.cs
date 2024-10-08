@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 using static HouseRentingSystem.Core.Constants.MessageConstants;
+using static HouseRentingSystem.Core.Constants.MessageTypes;
 
 namespace HouseRentingSystem.Web.Controllers
 {
@@ -39,7 +40,7 @@ namespace HouseRentingSystem.Web.Controllers
 
             if (await houseService.HasRentAsync(User.Id()))
             {
-                ModelState.AddModelError("Error", HasRents);
+                ModelState.AddModelError("Error", UserHasRents);
             }
 
             if (!ModelState.IsValid)
@@ -49,7 +50,9 @@ namespace HouseRentingSystem.Web.Controllers
 
             await agentService.CreateAsync(User.Id(), model);
 
-            return RedirectToAction(nameof(HouseController.All), "Houses");
+            TempData[SuccessMessage] = UserBecomeAgent;
+
+            return RedirectToAction(nameof(HouseController.All), "House");
         }
     }
 }
