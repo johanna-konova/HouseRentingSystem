@@ -1,13 +1,16 @@
 ﻿using HouseRentingSystem.Core.Models.Home;
 using HouseRentingSystem.Core.Models.House;
+using HouseRentingSystem.Core.Models.Admin;
 
 namespace HouseRentingSystem.Core.Contracts
 {
     public interface IHouseService
     {
         Task<IEnumerable<IndexViewModel>> GetLastThreeAsync();
+        Task<MyHousesViewModel> GetAdminHousesAsync(Guid adminAgentId, Guid adminUserId);
         Task<IEnumerable<HouseViewModel>> GetManagedByAgentIdAsync(Guid agentId);
         Task<IEnumerable<HouseViewModel>> GetRentedByUserIdAsync(Guid userId);
+        Task<IEnumerable<RentedHouseViewModel>> GetAllRentedAsync();
         Task<AllHousesQueryModel> GetAllAsync(AllHousesQueryModel model);
         Task<HouseFormModel?> AssembleHouseFormModelAsync(Guid id);
         Task<HouseDetailsViewModel?> GetDetailsAsync(Guid id);

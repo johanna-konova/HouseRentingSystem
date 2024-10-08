@@ -39,6 +39,11 @@ namespace HouseRentingSystem.Web.Controllers
 
         public async Task<IActionResult> Mine()
         {
+            if (User.IsAdmin())
+            {
+                return RedirectToAction(nameof(Mine), "House", new { area = "Admin" });
+            }
+
             var userId = User.Id();
             var agentId = await agentService.GetAgentIdAsync(userId);
 

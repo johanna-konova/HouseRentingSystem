@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using HouseRentingSystem.Core.Contracts;
+using HouseRentingSystem.Core.Models.Admin;
 using HouseRentingSystem.Core.Models.Home;
 using HouseRentingSystem.Core.Models.House;
 using HouseRentingSystem.Core.Models.House.Enums;
@@ -36,6 +37,13 @@ namespace HouseRentingSystem.Core.Services
                 .ProjectTo<IndexViewModel>(mapper.ConfigurationProvider)
                 .ToListAsync();
 
+        public async Task<MyHousesViewModel> GetAdminHousesAsync(Guid adminAgentId, Guid adminUserId)
+            => new MyHousesViewModel()
+            {
+                ManageredHouses = await GetManagedByAgentIdAsync(adminAgentId),
+                RentedHouses = await GetRentedByUserIdAsync(adminUserId),
+            };
+
         public async Task<IEnumerable<HouseViewModel>> GetManagedByAgentIdAsync(Guid agentId)
             => await repository
                 .AllAsNoTracking<House>()
@@ -48,6 +56,14 @@ namespace HouseRentingSystem.Core.Services
                 .AllAsNoTracking<House>()
                 .Where(h => h.RenterId == userId && h.IsActive)
                 .ProjectTo<HouseViewModel>(mapper.ConfigurationProvider)
+                .ToListAsync();
+
+        public async Task<IEnumerable<RentedHouseViewModel>> GetAllRentedAsync()
+            => await repository
+                .AllAsNoTracking<House>()
+                .Where (h => h.IsActive && h.RenterId != null)
+                .Include(h => h.Agent.User)
+                .ProjectTo<RentedHouseViewModel>(mapper.ConfigurationProvider)
                 .ToListAsync();
 
         public async Task<AllHousesQueryModel> GetAllAsync(AllHousesQueryModel model)

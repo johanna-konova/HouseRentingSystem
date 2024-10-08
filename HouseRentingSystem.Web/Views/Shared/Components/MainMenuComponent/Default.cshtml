@@ -5,9 +5,27 @@
 }
 
 <ul class="navbar-nav flex-grow-1">
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="House" asp-action="All">All Houses</a>
-    </li>
+    @if (User.IsAdmin())
+    {
+        <li class="nav-item dropdown">
+            <div>
+                <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">All</a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li>
+                        <a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="House" asp-action="All">All Houses</a>
+                        <a class="dropdown-item nav-link text-dark" asp-area="Admin" asp-controller="House" asp-action="Rented">All Rents</a>
+                        <a class="dropdown-item nav-link text-dark" asp-area="Admin" asp-controller="User" asp-action="All">All Users</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="House" asp-action="All">All Houses</a>
+        </li>
+    }
     @if (User?.Identity?.IsAuthenticated ?? false)
     {
         <li class="nav-item">

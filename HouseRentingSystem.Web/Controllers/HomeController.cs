@@ -2,6 +2,7 @@ using HouseRentingSystem.Core.Contracts;
 using HouseRentingSystem.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace HouseRentingSystem.Web.Controllers
 {
@@ -20,6 +21,11 @@ namespace HouseRentingSystem.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
+            if (User.IsAdmin())
+            {
+                return RedirectToAction(nameof(Index), "Home", new { area = "Admin" });
+            }
+
             var model = await houseService.GetLastThreeAsync();
 
             return View(model);
