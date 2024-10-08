@@ -33,7 +33,7 @@ namespace HouseRentingSystem.Core.Services
 				.Select(c => c.Name)
 				.ToListAsync();
 
-		public async Task<bool> HasCategoryWithGivenId(int id)
+		public async Task<bool> HasCategoryWithGivenIdAsync(int id)
 			=> await repository
 				.AllAsNoTracking<Category>()
 				.AnyAsync(c => c.Id == id);

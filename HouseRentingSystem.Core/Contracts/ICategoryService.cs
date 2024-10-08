@@ -6,6 +6,6 @@ namespace HouseRentingSystem.Core.Contracts
     {
         Task<IEnumerable<HouseCategoryOptionModel>> GetAllAsync();
         Task<IEnumerable<string>> GetCategoriesNamesAsync();
-        Task<bool> HasCategoryWithGivenId(int id);
+        Task<bool> HasCategoryWithGivenIdAsync(int id);
 	}
 }

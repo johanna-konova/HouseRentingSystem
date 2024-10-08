@@ -131,7 +131,7 @@ namespace HouseRentingSystem.Tests.UnitTests.Services
         public async Task HasCategoryWithGivenIdAsync_ShouldReturnTrue_WhenCategoryWithGivenIdExists()
         {
             // Act
-            var result = await categoryService.HasCategoryWithGivenId(1);
+            var result = await categoryService.HasCategoryWithGivenIdAsync(1);
 
             // Assert
             Assert.That(result, Is.True);
@@ -141,7 +141,7 @@ namespace HouseRentingSystem.Tests.UnitTests.Services
         public async Task HasCategoryWithGivenIdAsync_ShouldReturnFalse_WhenCategoryWithGivenIdNotExists()
         {
             // Act
-            var result = await categoryService.HasCategoryWithGivenId(5);
+            var result = await categoryService.HasCategoryWithGivenIdAsync(5);
 
             // Assert
             Assert.That(result, Is.False);

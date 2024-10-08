@@ -82,7 +82,7 @@ namespace HouseRentingSystem.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(HouseFormModel model)
         {
-            if (await categoryService.HasCategoryWithGivenId(model.CategoryId) == false)
+            if (await categoryService.HasCategoryWithGivenIdAsync(model.CategoryId) == false)
             {
                 ModelState.AddModelError(nameof(model.CategoryId), NonExistentCategory);
             }
@@ -113,7 +113,7 @@ namespace HouseRentingSystem.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(string id, HouseFormModel model)
         {
-            if (await categoryService.HasCategoryWithGivenId(model.CategoryId) == false)
+            if (await categoryService.HasCategoryWithGivenIdAsync(model.CategoryId) == false)
             {
                 ModelState.AddModelError(nameof(model.CategoryId), NonExistentCategory);
             }
