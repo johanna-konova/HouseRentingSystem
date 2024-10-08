@@ -17,10 +17,10 @@ namespace Microsoft.AspNetCore.Builder
             var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 
             var agentUser = await userManager.FindByEmailAsync(AgentUserEmail);
-            await AddUserClaim(userManager, agentUser, null);
+            await AddUserClaimAsync(userManager, agentUser, null);
 
             var guestUser = await userManager.FindByEmailAsync(GuestUserEmail);
-            await AddUserClaim(userManager, guestUser, null);
+            await AddUserClaimAsync(userManager, guestUser, null);
 
             return app;
         }

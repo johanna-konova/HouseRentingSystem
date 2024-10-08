@@ -8,7 +8,7 @@ namespace HouseRentingSystem.Web.Common
 {
     public static class CommonHelpers
     {
-        public static async Task AddUserClaim(
+        public static async Task AddUserClaimAsync(
             UserManager<ApplicationUser> userManager,
             ApplicationUser? user,
             SignInManager<ApplicationUser>? signInManager)

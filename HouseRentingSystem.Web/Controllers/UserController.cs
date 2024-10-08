@@ -68,7 +68,7 @@ namespace HouseRentingSystem.Web.Controllers
             }
 
             await signInManager.SignInAsync(user, false);
-            await AddUserClaim(userManager, user, signInManager);
+            await AddUserClaimAsync(userManager, user, signInManager);
 
             cache.Remove("UsersCacheKey");
 
@@ -111,7 +111,7 @@ namespace HouseRentingSystem.Web.Controllers
 
                 if (result.Succeeded)
                 {
-                    await AddUserClaim(userManager, user, signInManager);
+                    await AddUserClaimAsync(userManager, user, signInManager);
                     return Redirect(model.ReturnUrl ?? Url.Content("/"));
                 }
             }
