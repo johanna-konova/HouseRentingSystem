@@ -1,5 +1,7 @@
 ﻿using HouseRentingSystem.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace HouseRentingSystem.Web.Common
@@ -30,6 +32,29 @@ namespace HouseRentingSystem.Web.Common
                     }
                 }
             }
+        }
+
+        public static async Task<List<T>> GetCachedDataAsync<T>(
+            IDistributedCache cache,
+            string cacheKey,
+            Func<Task<IEnumerable<T>>> getDataFunc) // Приема IEnumerable<T> вместо List<T>
+        {
+            var cachedDataAsString = await cache.GetStringAsync(cacheKey);
+
+            if (cachedDataAsString != null)
+            {
+                return JsonConvert.DeserializeObject<List<T>>(cachedDataAsString)!;
+            }
+
+            var data = (await getDataFunc()).ToList();
+
+            var cacheOptions = new DistributedCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromSeconds(60))
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
+
+            await cache.SetStringAsync(cacheKey, JsonConvert.SerializeObject(data), cacheOptions);
+
+            return data;
         }
     }
 }

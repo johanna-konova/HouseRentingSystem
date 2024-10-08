@@ -22,12 +22,12 @@ namespace HouseRentingSystem.Web.Areas.Admin.Controllers
         [Route("User/All")]
         public async Task<IActionResult> All()
         {
-            var users = await userService.GetAllAsync();
+            //var users = await userService.GetAllAsync();
 
-            /*var users = await GetCachedDataAsync(
+            var users = await GetCachedDataAsync(
                 cache,
                 "UsersCacheKey",
-                userService.GetAllAsync);*/
+                userService.GetAllAsync);
 
             return View(users);
         }

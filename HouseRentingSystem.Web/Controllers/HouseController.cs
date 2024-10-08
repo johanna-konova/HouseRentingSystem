@@ -3,6 +3,7 @@ using HouseRentingSystem.Core.Models.House;
 using HouseRentingSystem.Web.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using System.Security.Claims;
 
 using static HouseRentingSystem.Core.Constants.ModelsMessagesConstants;
@@ -15,15 +16,18 @@ namespace HouseRentingSystem.Web.Controllers
         private readonly IAgentService agentService;
         private readonly ICategoryService categoryService;
         private readonly IHouseService houseService;
+        private readonly IDistributedCache cache;
 
         public HouseController(
             IAgentService _agentService,
             ICategoryService _categoryService,
-            IHouseService _houseService)
+            IHouseService _houseService,
+            IDistributedCache _cache)
         {
             agentService = _agentService;
             categoryService = _categoryService;
             houseService = _houseService;
+            cache = _cache;
         }
 
         [AllowAnonymous]
@@ -152,6 +156,8 @@ namespace HouseRentingSystem.Web.Controllers
         {
             await houseService.RentAsync(Guid.Parse(id), User.Id());
 
+            cache.Remove("RentsCacheKey");
+
             return RedirectToAction(nameof(Mine));
         }
 
@@ -161,6 +167,8 @@ namespace HouseRentingSystem.Web.Controllers
         public async Task<IActionResult> Leave(string id)
         {
             await houseService.LeaveAsync(Guid.Parse(id));
+
+            cache.Remove("RentsCacheKey");
 
             return RedirectToAction(nameof(Mine));
         }

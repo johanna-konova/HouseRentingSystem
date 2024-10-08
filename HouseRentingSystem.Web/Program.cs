@@ -1,6 +1,7 @@
 using HouseRentingSystem.Core.Contracts;
 using HouseRentingSystem.Web.ModelBinder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,11 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddApplicationServices();
 
 builder.Services.AddAutoMapper(typeof(IHouseService).Assembly);
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetValue<string>("RedisCache:Configuration");
+});
 
 var app = builder.Build();
 

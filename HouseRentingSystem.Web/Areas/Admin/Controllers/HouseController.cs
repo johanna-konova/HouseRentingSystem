@@ -41,12 +41,12 @@ namespace HouseRentingSystem.Web.Areas.Admin.Controllers
         [Route("Rent/All")]
         public async Task<IActionResult> Rented()
         {
-            var rentedHouses = await houseService.GetAllRentedAsync();
+            //var rentedHouses = await houseService.GetAllRentedAsync();
 
-            /*var rentedHouses = await GetCachedDataAsync(
+            var rentedHouses = await GetCachedDataAsync(
                 cache,
                 "RentsCacheKey",
-                houseService.GetAllRentedAsync);*/
+                houseService.GetAllRentedAsync);
 
             return View(rentedHouses);
         }

@@ -3,7 +3,7 @@ using HouseRentingSystem.Infrastructure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.Extensions.Caching.Distributed;
 using static HouseRentingSystem.Core.Constants.MessageConstants;
 using static HouseRentingSystem.Web.Common.CommonHelpers;
 
@@ -14,13 +14,16 @@ namespace HouseRentingSystem.Web.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IDistributedCache cache;
 
         public UserController(
             UserManager<ApplicationUser> _userManager,
-            SignInManager<ApplicationUser> _signInManager)
+            SignInManager<ApplicationUser> _signInManager,
+            IDistributedCache _cache)
         {
             userManager = _userManager;
             signInManager = _signInManager;
+            cache = _cache;
         }
 
         [AllowAnonymous]
@@ -66,6 +69,8 @@ namespace HouseRentingSystem.Web.Controllers
 
             await signInManager.SignInAsync(user, false);
             await AddUserClaim(userManager, user, signInManager);
+
+            cache.Remove("UsersCacheKey");
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
